@@ -1,5 +1,3 @@
-
-
 fib_array = [0, 1]
 def fib(n):
     if n <= 0:
@@ -9,7 +7,7 @@ def fib(n):
     elif n == 2: 
         return fib_array[1]
     else:
-        for i in range(2, n+1):
+        for i in range(2, n):
             temp = fib_array[1]
             fib_array[1] = fib_array[0] + fib_array[1]
             fib_array[0] = temp
