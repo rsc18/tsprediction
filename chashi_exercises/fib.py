@@ -22,5 +22,6 @@ if __name__ == "__main__":
         print('Enter a numbers: ')
         n = int(input())
         print(fib(n))
+        fib_array = [0,1]
         
         
