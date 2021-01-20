@@ -18,12 +18,17 @@ matplotlib.rcParams['figure.figsize'] = (20.0, 10.0)
 
 
 ts = TimeSeries(key='2JVYQIAGV1ABJD0O', output_format='pandas')
-data, meta_data = ts.get_intraday(symbol='MSFT',interval='1min', outputsize='full')
+#Microsoft : MSFT
+#Apple : AAPL 
+data_apple, meta_data_ms = ts.get_intraday(symbol='AAPL',interval='60min', outputsize='full')
 # We can describe it
-data.describe()
+# data.describe()
+data_ms, meta_data_ms = ts.get_intraday(symbol='MSFT',interval='60min', outputsize='full')
+#LI
+data_li, meta_data_li = ts.get_intraday(symbol='LI',interval='60min', outputsize='full')
 
+fig,axs = plt.subplots(3)
+data_apple['4. close'].plot(ax=axs[0])
+data_ms['4. close'].plot(ax=axs[1])
+data_li['4. close'].plot(ax=axs[2])
 
-data['4. close'].plot()
-plt.title('Intraday Times Series for the MSFT stock (1 min)')
-plt.grid()
-plt.show()
