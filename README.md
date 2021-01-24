@@ -11,12 +11,6 @@ This repo contains the code base for predicting time series stock data. We will 
 |---------|-----------------|-------|
 | Ram Sharan Chaulagain | RSC18 | rsc18@my.fsu.edu |
 | Chashi Mahiul Islam | CI20L | ci20l@my.fsu.edu |
-* Ram Sharan Chaulagain
-  FSUID: RSC18
-  FSU email: rsc18@my.fsu.edu
-* Chashi Mahiul Islam 
-  FSUID: CI20L 
-  FSU email: ci20l@my.fsu.edu
 
 ### Methods Used
 * Data Visualization
