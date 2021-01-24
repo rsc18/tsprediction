@@ -1,5 +1,4 @@
-# Sequence to Sequence Stock Time Series Data Prediction Model using PyTorch
-This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train which will predict future stock values of given equity. We will be using LSTM for training. 
+# Sequence to Sequence Stock Time Series Data Prediction Model using PyTorch 
 
 #### -- Project Status: [Active, On-Hold, Completed]
 Active
@@ -28,10 +27,10 @@ This repo contains the code base for predicting time series stock data. We will 
  
 
 ## Project Description
-Alpha- vantage: We will collect stock time series data using Alpha-vantage time series stock API. 
-PyTorch: 
-LSTM
-Seq-seq model
+* Alpha- vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
+* PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
+* LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
+* Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
 
 
 ## Needs of this project
@@ -51,6 +50,6 @@ Seq-seq model
 
 |Name     |  github id   | 
 |---------|-----------------|
-|Piyush Kumar pkfl
+|Piyush Kumar | pkfl
 
 
