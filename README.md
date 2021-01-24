@@ -7,6 +7,10 @@ Active
 This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train ehich will predict future stock values of given equity. We will be using LSTM for training. 
 
 ### Partner
+|Name     |  FSUID   |  FSU e-mail  |
+|---------|-----------------|-------|
+| Ram Sharan Chaulagain | RSC18 | rsc18@my.fsu.edu |
+| Chashi Mahiul Islam | CI20L | ci20l@my.fsu.edu |
 * Ram Sharan Chaulagain
   FSUID: RSC18
   FSU email: rsc18@my.fsu.edu
@@ -50,6 +54,6 @@ This repo contains the code base for predicting time series stock data. We will 
 
 |Name     |  github id   | 
 |---------|-----------------|
-|Piyush Kumar | pkfl
+|Piyush Kumar | pkfl |
 
 
