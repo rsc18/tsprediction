@@ -13,7 +13,7 @@ CURRENT_DIR = os.getcwd()
 PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
 sys.path.append(PARENT_DIR)
 
-import data.raw_data_extractor as rde
+import datasets.raw_data_extractor as rde
 
 
 def test_get_intraday_dataset():
