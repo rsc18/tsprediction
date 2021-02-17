@@ -1,3 +1,0 @@
-timestamp,symbol,side,size,price,tickDirection,trdMatchID,grossValue,homeNotional,foreignNotional
-2014-11-22D17:51:38.948471000,XBTZ14,Buy,1,360,ZeroPlusTick,84eead2e-53a1-98a0-725d-ac78ef8b2399,360000,0.0036,1.296
-2014-11-22D17:57:06.906478000,XBTZ14,Buy,1,370,PlusTick,0a33412a-b9c1-fa03-d42d-6059757f9eaa,370000,0.0037,1.369
