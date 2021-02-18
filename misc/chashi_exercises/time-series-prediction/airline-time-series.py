@@ -27,9 +27,9 @@ def sliding_windows(data, seq_length):
     x = []
     y = []
 
-    for i in range(len(data)-seq_length-1):
+    for i in range(len(data)-2*seq_length + 1):
         _x = data[i:(i+seq_length)]
-        _y = data[i+seq_length]
+        _y = data[i+seq_length : i+seq_length + seq_length]
         x.append(_x)
         y.append(_y)
 
@@ -38,6 +38,8 @@ def sliding_windows(data, seq_length):
 sc = MinMaxScaler()
 training_data = sc.fit_transform(training_set)
 
+training_data = np.array([i for i in range(41) if i%2!=0])
+training_data = training_data.reshape(20,1)
 seq_length = 4
 x, y = sliding_windows(training_data, seq_length)
 
@@ -85,39 +87,41 @@ class LSTM(nn.Module):
         
         return out
     
-num_epochs = 2000
+num_epochs = 20000
 learning_rate = 0.01
 
 input_size = 1
 hidden_size = 2
 num_layers = 1
 
-num_classes = 1
+num_classes = seq_length
 
 lstm = LSTM(num_classes, input_size, hidden_size, num_layers)
 
 criterion = torch.nn.MSELoss()    # mean-squared error for regression
 optimizer = torch.optim.Adam(lstm.parameters(), lr=learning_rate)
 #optimizer = torch.optim.SGD(lstm.parameters(), lr=learning_rate)
-
 # Train the model
+o = lstm(trainX)
 for epoch in range(num_epochs):
     outputs = lstm(trainX)
     optimizer.zero_grad()
-    
     # obtain the loss function
-    loss = criterion(outputs, trainY)
+    loss = criterion(outputs, trainY.view(trainY.shape[0], -1))
     
     loss.backward()
     
     optimizer.step()
-    if epoch % 100 == 0:
+    if epoch % 200 == 0:
+      print(outputs)
+      print(trainY.view(trainY.shape[0], -1))
       print("Epoch: %d, loss: %1.5f" % (epoch, loss.item()))
       
 lstm.eval()
 train_predict = lstm(dataX)
-
-data_predict = train_predict.data.numpy()
+tp = train_predict.view(-1, 1)
+data_predict = tp.data.numpy()
+dataY = dataY.view(-1,1)
 dataY_plot = dataY.data.numpy()
 
 data_predict = sc.inverse_transform(data_predict)
