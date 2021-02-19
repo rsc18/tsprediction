@@ -14,7 +14,11 @@ import torch.nn as nn
 from torch.autograd import Variable
 from sklearn.preprocessing import MinMaxScaler
 import random
-training_set = pd.read_csv('microsoft.csv')
+from google.colab import drive
+drive.mount('/content/grive')
+#%matplotlib inline
+
+training_set = pd.read_csv('/content/grive/MyDrive/microsoft.csv')
 #training_set = pd.read_csv('shampoo.csv')
 
 training_set = training_set.iloc[1:,4:5].values
@@ -42,8 +46,10 @@ def sliding_windows(data, seq_length):
 # training_data = np.array([i for i in range(81) if i%2!=0])
 # training_data = training_data.reshape(20,1)
 # =============================================================================
-training_data = training_set
-seq_length = 16
+sc = MinMaxScaler()
+training_data = sc.fit_transform(training_set)
+#training_data = training_set
+seq_length = 64
 x, y = sliding_windows(training_data, seq_length)
 
 train_size = int(len(y) * 0.67)
@@ -67,6 +73,38 @@ trainY = Variable(torch.Tensor(np.array(y_new[0:train_size])))
 
 testX = Variable(torch.Tensor(np.array(x_new[train_size:len(x)])))
 testY = Variable(torch.Tensor(np.array(y_new[train_size:len(y)])))
+
+lstm.eval()
+test_predict = lstm(testX[:50])
+tp = test_predict.view(-1, 1)
+data_predict = tp.data.numpy()
+dataY = (testY[:50]).view(-1,1)
+dataY_plot = dataY.data.numpy()
+data_predict = sc.inverse_transform(data_predict)
+dataY_plot = sc.inverse_transform(dataY_plot)
+plt.axvline(x=train_size, c='r', linestyle='--')
+
+plt.plot(dataY_plot)
+plt.plot(data_predict)
+plt.suptitle('Time-Series Prediction')
+plt.show()
+'''
+train_predict = lstm(dataX)
+tp = train_predict.view(-1, 1)
+data_predict = tp.data.numpy()
+dataY = dataY.view(-1,1)
+dataY_plot = dataY.data.numpy()
+
+data_predict = sc.inverse_transform(data_predict)
+dataY_plot = sc.inverse_transform(dataY_plot)
+
+plt.axvline(x=train_size, c='r', linestyle='--')
+
+plt.plot(dataY_plot)
+plt.plot(data_predict)
+plt.suptitle('Time-Series Prediction')
+plt.show()
+'''
 
 class LSTM(nn.Module):
 
@@ -100,7 +138,7 @@ class LSTM(nn.Module):
         
         return out
     
-num_epochs = 1000
+num_epochs = 15000
 learning_rate = 0.01
 
 input_size = 1
@@ -131,17 +169,13 @@ for epoch in range(num_epochs):
       print("Epoch: %d, loss: %1.5f" % (epoch, loss.item()))
       
 lstm.eval()
-test_predict = lstm(testX)
+test_predict = lstm(testX[:50])
 tp = test_predict.view(-1, 1)
 data_predict = tp.data.numpy()
-dataY = testY.view(-1,1)
+dataY = (testY[:50]).view(-1,1)
 dataY_plot = dataY.data.numpy()
-# =============================================================================
-# 
-# data_predict = sc.inverse_transform(data_predict)
-# dataY_plot = sc.inverse_transform(dataY_plot)
-# =============================================================================
-
+data_predict = sc.inverse_transform(data_predict)
+dataY_plot = sc.inverse_transform(dataY_plot)
 plt.axvline(x=train_size, c='r', linestyle='--')
 
 plt.plot(dataY_plot)
