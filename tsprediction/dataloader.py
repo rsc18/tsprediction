@@ -11,8 +11,10 @@ import sys
 import os
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-'''
+
+
 # from alpha_vantage.timeseries import TimeSeries
+'''
 CURRENT_DIR = os.getcwd()
 PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
 sys.path.append(PARENT_DIR)
@@ -43,6 +45,8 @@ train_data_normalized = torch.FloatTensor(train_data_normalized).view(-1)
 
 batch_size = 16
 window = int(divison/16)
+
+
 
 def create_inout_sequences(input_data, tw):
     x = []

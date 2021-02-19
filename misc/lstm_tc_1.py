@@ -7,24 +7,51 @@ Created on Mon Feb  8 19:54:10 2021
 import torch
 import torch.nn as nn
 
-import seaborn as sns
+#import seaborn as sns
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+import sys
+import os
 
-from alpha_vantage.timeseries import TimeSeries
+CURRENT_DIR = os.getcwd()
+PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
+sys.path.append(PARENT_DIR)
+
+import tsprediction.dataloader as dl
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+'''
+from alpha_vantage.timeseries import TimeSeries
 
 ts = TimeSeries(key='2JVYQIAGV1ABJD0O', output_format='pandas')
 data_ms, meta_data_ms = ts.get_intraday(symbol='TSLA',interval='1min', outputsize='full')
 # data_ms, meta_data_ms = ts.get_monthly(symbol='TSLA')
 
 training_set = data_ms.iloc[:,3:4]['4. close'].values.astype(float)
+'''
+
+all_data = torch.rand((100,))
+
+train_data_percentage = 0.8
+
+total_length = len(all_data)
+divison  = int(total_length*train_data_percentage)
+
+train_data = all_data[:divison]
+test_data = all_data[divison:]
 
 
-all_data = training_set
+scaler = MinMaxScaler(feature_range=(-1, 1))
+train_data_normalized = scaler.fit_transform(train_data .reshape(-1, 1))
 
+train_data_normalized = torch.FloatTensor(train_data_normalized).view(-1)
+
+train_loader = dl.load(train_data_normalized, batch_size = 1, shuffle = True)
+dataiter = iter(train_loader)
+
+x,y = dataiter.next()
+'''
 test_data_size =75
 
 train_data = all_data[:-test_data_size]
@@ -48,8 +75,8 @@ def create_inout_sequences(input_data, tw):
         train_label = input_data[i+tw:i+tw+1]
         inout_seq.append((train_seq ,train_label))
     return inout_seq
-
-train_inout_seq = create_inout_sequences(train_data_normalized, train_window)
+'''
+#train_inout_seq = create_inout_sequences(train_data_normalized, train_window)
 
 
 class LSTM(nn.Module):
@@ -76,7 +103,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 epochs = 200
 
 for i in range(epochs):
-    for seq, labels in train_inout_seq:
+    for seq, labels in train_loader:
         optimizer.zero_grad()
         model.hidden_cell = (torch.zeros(1, 1, model.hidden_layer_size).to(device),
                         torch.zeros(1, 1, model.hidden_layer_size).to(device))
