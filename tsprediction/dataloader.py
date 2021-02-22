@@ -97,8 +97,8 @@ def dataloader_from_csv(
     sequence_length: int = 64,
 ):
     """
-    Loads the data from a csv file and returns train or test data
-    according to the splitting percentage.
+    Loads the data from a csv file and returns normalized train or test data
+    according to the splitting percentage. 
     Parameters
     ----------
     filename : str
@@ -119,7 +119,7 @@ def dataloader_from_csv(
 
     """
     # loading the dataset from a csv file
-    dataset = ((pd.read_csv(filename)).iloc[:, 4].values).reshape(-1, 1)
+    dataset = ((pd.read_csv(filename)).iloc[:, 4].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
     # normalizing the data
     min_max_scalar = MinMaxScaler()
     normalized_data = min_max_scalar.fit_transform(dataset)
