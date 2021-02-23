@@ -24,10 +24,8 @@ from figures.plot_data import plot_utils
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="0.0.rc1")
-    try:
+    if arguments["<predictSequenceLength>"]:
         sequence_length = int(arguments["<predictSequenceLength>"])
-    except TypeError:
-        pass
 
     if arguments["--listcompanies"] == True:
         companies_list = get_companies(arguments["-k"])["bestMatches"]
@@ -38,7 +36,8 @@ if __name__ == "__main__":
         # test: check bestmatch key in json
 
     elif arguments["alphavantage"] == True:
-        epochs = int(arguments["--epochs"])
+        if arguments["--epochs"]:
+            epochs = int(arguments["--epochs"])
         companySymbol = arguments["<companySymbol>"]
         predictSequenceLength = sequence_length
         plot_flag = arguments["--plot"]
@@ -49,9 +48,14 @@ if __name__ == "__main__":
             dataset, train=True, sequence_length=sequence_length
         )
         train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])
-        model, loss = train_model(
-            train_data_tuple, sequence_length, save_model=save_model, epochs = epochs
-        )
+        if arguments["--epochs"]:
+            model, loss = train_model(
+                train_data_tuple, sequence_length, save_model=save_model, epochs=epochs)
+        else:
+            model, loss = train_model(
+                train_data_tuple, sequence_length, save_model=save_model)
+
+
         print(f"loss of trained model = {loss}")
 
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
@@ -60,7 +64,8 @@ if __name__ == "__main__":
         plot_utils(test_data_tuple[1], predicted_data)
 
     elif arguments["custom"] == True:
-        epochs = int(arguments["--epochs"])
+        if arguments["--epochs"]:
+            epochs = int(arguments["--epochs"])
         csvloc = arguments["<csvFileLocation>"]
         predictSequenceLength = sequence_length
         plot_flag = arguments["--plot"]
@@ -78,9 +83,13 @@ if __name__ == "__main__":
             custom=True,
         )
         train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])
-        model, loss = train_model(
-            train_data_tuple, sequence_length, save_model=save_model, epochs = epochs
-        )
+        if arguments["--epochs"]:
+            model, loss = train_model(train_data_tuple, sequence_length, save_model=save_model, epochs = epochs)
+        else:
+            model, loss = train_model(
+                train_data_tuple, sequence_length, save_model=save_model)
+
+
         print(f"loss of trained model = {loss}")
 
         # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
