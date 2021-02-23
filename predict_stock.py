@@ -49,7 +49,6 @@ if __name__ == "__main__":
 
         train_test_data_tuple = dataloader_from_pandas(
             dataset_train,
-            train=True,
             sequence_length=sequence_length,
             train_size_percentage=1
         )
@@ -66,7 +65,6 @@ if __name__ == "__main__":
         # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
-            train=True,
             sequence_length=sequence_length,
             train_size_percentage=0
         )
@@ -88,7 +86,6 @@ if __name__ == "__main__":
                
         train_test_data_tuple = dataloader_from_pandas(
             dataset_train,
-            train=True,
             sequence_length=sequence_length,
             train_size_percentage=1,
             custom=True,
@@ -106,7 +103,6 @@ if __name__ == "__main__":
         # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
-            train=True,
             sequence_length=sequence_length,
             train_size_percentage=0,
             custom=True,

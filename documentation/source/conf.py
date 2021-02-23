@@ -17,7 +17,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
-    "sphinx.ext.autodoc",
 ]
 
 # -- Options for HTML output -------------------------------------------------
@@ -27,4 +26,4 @@ html_title = project
 # NOTE: All the lines are after this are the theme-specific ones. These are
 #       written as part of the site generation pipeline for this project.
 # !! MARKER !!
-html_theme = "dask_sphinx_theme"
+html_theme = "sphinx_rtd_theme"

@@ -98,7 +98,7 @@ def dataloader_from_csv(
 ):
     """
     Loads the data from a csv file and returns normalized train or test data
-    according to the splitting percentage. 
+    according to the splitting percentage.
     Parameters
     ----------
     filename : str
@@ -119,7 +119,9 @@ def dataloader_from_csv(
 
     """
     # loading the dataset from a csv file
-    dataset = ((pd.read_csv(filename)).iloc[:, 4].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
+    dataset = ((pd.read_csv(filename)).iloc[:, 4].values).reshape(-1, 1)
+    # why 4. close, check for seq length datalenght should be equal or greater
+    # than seq length
     # normalizing the data
     min_max_scalar = MinMaxScaler()
     normalized_data = min_max_scalar.fit_transform(dataset)
@@ -149,18 +151,17 @@ def dataloader_from_csv(
 
 
 def dataloader_from_pandas(
-    df: pd.core.frame.DataFrame,
+    dataframe: pd.core.frame.DataFrame,
     train_size_percentage: float = 0.7,
-    train: bool = True,
     sequence_length: int = 64,
     custom=False
 ):
     """
     Loads the data from a csv file and returns normalized train or test data
-    according to the splitting percentage. 
+    according to the splitting percentage.
     Parameters
     ----------
-    df : pandas.core.frame.DataFrame,
+    dataframe : pandas.core.frame.DataFrame,
          pandas dataFrame with time series data. We only extract the 5th column for now.
     train_size_percentage : float, optional
         train-test split. The default is 0.7.
@@ -179,11 +180,11 @@ def dataloader_from_pandas(
     """
     # loading the dataset from a csv file
     if custom:
-        dataset=df
-    
+        dataset=dataframe
     else:
-        dataset = (df.iloc[:, 3].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
-    
+        dataset = (dataframe.iloc[:, 3].values).reshape(-1, 1)
+    # why 4. close, check for seq length datalenght should be equal or greater
+    # than seq length
     # normalizing the data
     if train_size_percentage==1:
         normalized_data=norm_data(dataset,'train_norm')
