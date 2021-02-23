@@ -43,7 +43,7 @@ if __name__ == "__main__":
         plot_flag = arguments["--plot"]
         save_model = arguments["--saveModel"]
         dataset = get_intraday_dataset(companySymbol)
-        
+        dataset=dataset.sort_index()
         dataset_train = dataset[: -2 * sequence_length]
         dataset_test = dataset[-2 * sequence_length :]
 
@@ -71,10 +71,8 @@ if __name__ == "__main__":
             train_size_percentage=0
         )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
-
         predicted_data = predict_model(model, test_data_tuple[0])
-        # print(test_data_tuple[0])
-        plot_utils(test_data_tuple[1], predicted_data,sequence_length,dataset)
+        plot_utils(test_data_tuple, predicted_data,sequence_length,dataset)
         
 
     elif arguments["custom"] == True:
@@ -85,10 +83,9 @@ if __name__ == "__main__":
         plot_flag = arguments["--plot"]
         save_model = arguments["--saveModel"]
         dataset = pd.read_csv(csvloc)
-
         dataset_train = dataset[: -2 * sequence_length]
         dataset_test = dataset[-2 * sequence_length :]
-
+               
         train_test_data_tuple = dataloader_from_pandas(
             dataset_train,
             train=True,
@@ -115,7 +112,5 @@ if __name__ == "__main__":
             custom=True,
         )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
-
         predicted_data = predict_model(model, test_data_tuple[0])
-        # print(test_data_tuple[0])
-        plot_utils(test_data_tuple[1], predicted_data,sequence_length,dataset)
+        plot_utils(test_data_tuple, predicted_data,sequence_length,dataset)
