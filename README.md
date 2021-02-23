@@ -6,38 +6,11 @@ Active
 ## Project Intro/Objective
 This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train ehich will predict future stock values of given equity. We will be using LSTM for training. 
 
-### Partner
-|Name     |  FSUID   |  FSU e-mail  |
-|---------|-----------------|-------|
-| Ram Sharan Chaulagain | RSC18 | rsc18@my.fsu.edu |
-| Chashi Mahiul Islam | CI20L | ci20l@my.fsu.edu |
-
-### Methods Used
-* Data Visualization
-* Deep Learning
-
-
-### Technologies
-* Python
-* Pandas
-* Spyder
-* PyTorch
- 
-
 ## Project Description
 * Alpha- vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
 * PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
 * LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
 * Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
-
-
-## Needs of this project
-
-- data collection from stock API
-- data processing/cleaning
-- Deep learning library PyTorch with gpu support
-- writeup/reporting
-
 ## Usage
 
 ```
@@ -57,6 +30,29 @@ This repo contains the code base for predicting time series stock data. We will 
         --epochs = no-of-epochs     no of epochs
 
 ```
+## Example
+To list companies symbol that match keyword "micro" :  
+``` python predict_stock.py --listcompanies -k micro  ```
+To train a stock model with TSLA(Tesla) data.  
+``` python predict_stock.py alphavantage TSLA 64 --saveModel=teslaModel --epochs=2000   ```
+To train a model with custom datasets.  
+``` python predict_stock.py custom file.csv 9   ```
+
+
+### Technologies
+* Python
+* Pandas
+* Spyder
+* PyTorch
+ 
+
+### Partner
+|Name     |  FSUID   |  FSU e-mail  |
+|---------|-----------------|-------|
+| Ram Sharan Chaulagain | RSC18 | rsc18@my.fsu.edu |
+| Chashi Mahiul Islam | CI20L | ci20l@my.fsu.edu |
+
+
 #### Project Supervisor:
 
 |Name     |  github id   | 
