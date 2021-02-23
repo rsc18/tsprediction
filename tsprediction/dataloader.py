@@ -182,7 +182,7 @@ def dataloader_from_pandas(
         dataset=df
     
     else:
-        dataset = (df.iloc[:, 4].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
+        dataset = (df.iloc[:, 3].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
     
     # normalizing the data
     
