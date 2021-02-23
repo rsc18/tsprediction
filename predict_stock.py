@@ -43,14 +43,19 @@ if __name__ == "__main__":
         plot_flag = arguments["--plot"]
         save_model = arguments["--saveModel"]
         dataset = get_intraday_dataset(companySymbol)
+        
+        dataset_train = dataset[: -2 * sequence_length]
+        dataset_test = dataset[-2 * sequence_length :]
 
         train_test_data_tuple = dataloader_from_pandas(
-            dataset, train=True, sequence_length=sequence_length
+            dataset_train,
+            train=True,
+            sequence_length=sequence_length,
+            train_size_percentage=1
         )
         train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])
         if arguments["--epochs"]:
-            model, loss = train_model(
-                train_data_tuple, sequence_length, save_model=save_model, epochs=epochs)
+            model, loss = train_model(train_data_tuple, sequence_length, save_model=save_model, epochs = epochs)
         else:
             model, loss = train_model(
                 train_data_tuple, sequence_length, save_model=save_model)
@@ -58,10 +63,19 @@ if __name__ == "__main__":
 
         print(f"loss of trained model = {loss}")
 
+        # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
+        train_test_data_tuple = dataloader_from_pandas(
+            dataset_test,
+            train=True,
+            sequence_length=sequence_length,
+            train_size_percentage=0
+        )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
+
         predicted_data = predict_model(model, test_data_tuple[0])
-        print(test_data_tuple[0])
-        plot_utils(test_data_tuple[1], predicted_data)
+        # print(test_data_tuple[0])
+        plot_utils(test_data_tuple[1], predicted_data,dataset)
+        
 
     elif arguments["custom"] == True:
         if arguments["--epochs"]:
