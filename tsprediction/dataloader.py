@@ -185,8 +185,10 @@ def dataloader_from_pandas(
         dataset = (df.iloc[:, 3].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
     
     # normalizing the data
-    
-    normalized_data=norm_data(dataset)
+    if train_size_percentage==1:
+        normalized_data=norm_data(dataset,'train_norm')
+    else:
+        normalized_data=norm_data(dataset,'test_norm')
     # min_max_scalar = MinMaxScaler()
     # normalized_data = min_max_scalar.fit_transform(dataset)
 
