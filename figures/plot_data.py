@@ -22,28 +22,28 @@ def plot_utils(test_data,predicted_data,seq,dataset=None):
 
     '''
 
-    sc=joblib.load('models/norm_model.mod')
-    data_predict = sc.inverse_transform(predicted_data)    
-    testY=test_data    
-    dataY = (testY[:50]).view(-1,1)    
+    sc2=joblib.load('models/test_norm.mod')
+    data_predict = sc2.inverse_transform(predicted_data)    
+    testX=sc2.inverse_transform(test_data[0].view(-1,1).data.numpy())
+    testY=test_data[1]
+    dataY = (testY).view(-1,1)    
     dataY_plot = dataY.data.numpy()
-    data_predict = sc.inverse_transform(predicted_data)
-    dataY_plot = sc.inverse_transform(dataY_plot)
+    data_predict = sc2.inverse_transform(predicted_data)
+    dataY_plot = sc2.inverse_transform(dataY_plot)
     
     plt.grid(True)
     plt.autoscale(axis='x', tight=True)
     
     if len(dataset.columns)>2:
         dataset=dataset['4. close']
-        x = list(dataset.index)[0:seq]
-        plt.plot(dataset, label='real data')
-        plt.axvline(x = x[-1], color = 'r') 
-    else:
-        x = list(dataset.index)[-seq:]
-        plt.plot(dataset, label='real data')
-        plt.axvline(x = x[0], color = 'r')         
+
+    x = list(dataset.index)[-seq:]
+    line_index=list(dataset.index)[-seq-1:][0]
+    plt.plot(dataset, label='real data',color='navy')
+    plt.plot(list(dataset.index)[-2*seq:(-seq)],testX,color='forestgreen',label='input_sequence')
+    plt.axvline(x = line_index, color = 'r')         
     
-    plt.plot(x,data_predict.flatten(), label='predict data')
+    plt.plot(x,data_predict.flatten(), label='output_sequence',color='peru')
     
     # plt.plot(dataY_plot,label='real data')
     # plt.plot(data_predict, label='predict data')
@@ -52,4 +52,3 @@ def plot_utils(test_data,predicted_data,seq,dataset=None):
     plt.title('Time-Series Prediction')
     plt.legend()
     plt.show()
-
