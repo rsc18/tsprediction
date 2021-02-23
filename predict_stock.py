@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
         predicted_data = predict_model(model, test_data_tuple[0])
         # print(test_data_tuple[0])
-        plot_utils(test_data_tuple[1], predicted_data,dataset)
+        plot_utils(test_data_tuple[1], predicted_data,sequence_length,dataset)
         
 
     elif arguments["custom"] == True:
@@ -118,4 +118,4 @@ if __name__ == "__main__":
 
         predicted_data = predict_model(model, test_data_tuple[0])
         # print(test_data_tuple[0])
-        plot_utils(test_data_tuple[1], predicted_data)
+        plot_utils(test_data_tuple[1], predicted_data,sequence_length,dataset)
