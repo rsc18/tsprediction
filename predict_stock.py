@@ -23,7 +23,11 @@ from figures.plot_data import plot_utils
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="0.0.rc1")
-    sequence_length = int(arguments["<predictSequenceLength>"])
+    try:
+        sequence_length = int(arguments["<predictSequenceLength>"])
+    except TypeError:
+        pass
+
     if arguments["--listcompanies"] == True:
         companies_list = get_companies(arguments["-k"])["bestMatches"]
         assert len(companies_list) > 0, " cannot find any companies with that keyword"
