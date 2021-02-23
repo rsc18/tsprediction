@@ -31,12 +31,12 @@ This repo contains the code base for predicting time series stock data. We will 
 
 ```
 ## Example
-To list companies symbol that match keyword "micro" :  
-``` python predict_stock.py --listcompanies -k micro  ```
-To train a stock model with TSLA(Tesla) data.  
-``` python predict_stock.py alphavantage TSLA 64 --saveModel=teslaModel --epochs=2000   ```
+To list companies symbol that match keyword "micro" :         
+``` python predict_stock.py --listcompanies -k micro  ```       
+To train a stock model with TSLA(Tesla) data.     
+``` python predict_stock.py alphavantage TSLA 64 --saveModel=teslaModel --epochs=2000   ```      
 To train a model with custom datasets.  
-``` python predict_stock.py custom file.csv 9   ```
+``` python predict_stock.py custom file.csv 9   ```       
 
 
 ### Technologies
