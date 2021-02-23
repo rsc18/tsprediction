@@ -38,12 +38,25 @@ This repo contains the code base for predicting time series stock data. We will 
 - Deep learning library PyTorch with gpu support
 - writeup/reporting
 
-## Getting Started
+## Usage
 
-1. Clone this repo 
-2. Raw Data is using data_collection code    
-3. etc...
+```
+    Predict Stock CLI
 
+    Usage:
+        predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
+        predict_stock.py custom <csvFileLocation> <predictSequenceLength> [options]
+        predict_stock.py --help
+        predict_stock.py --listcompanies -k <keywords>
+ 
+    Options:
+        -h --help                   help with predict_stock useage
+        --plot= True/False          plot flag if true saves the plots in plot folder
+        --saveModel= model-name     save_model flag if given saves the trained model with given model-name for future use
+        -k <keywords>               search companies names using keyword
+        --epochs = no-of-epochs     no of epochs
+
+```
 #### Project Supervisor:
 
 |Name     |  github id   | 
