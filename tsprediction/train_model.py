@@ -51,8 +51,8 @@ def train_model(train_dataset_tuple,sequence_length,save_model=None, epochs=1000
         optimizer.step()
         if debug:
             if epoch % 20 == 0:
-                # print(outputs)
-                # print(trainY.view(trainY.shape[0], -1))
+                #print(outputs)
+                #print(trainY.view(trainY.shape[0], -1))
                 print("Epoch: %d, loss: %1.5f" % (epoch, loss.item()))
     if save_model:        
         torch.save(lstm.state_dict(),'models/'+save_model)
