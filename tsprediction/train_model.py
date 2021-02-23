@@ -4,7 +4,7 @@ Train model here
 import torch 
 from tsprediction.lstm_class import LSTM
 
-def train_model(train_dataset_tuple,sequence_length,save_model=None):
+def train_model(train_dataset_tuple,sequence_length,save_model=None, epochs=1000):
     '''
     
 
@@ -26,7 +26,7 @@ def train_model(train_dataset_tuple,sequence_length,save_model=None):
     debug=True
     
     trainX,trainY=train_dataset_tuple
-    num_epochs = 1000
+    num_epochs = epochs
     learning_rate = 0.01
     
     input_size = 1
