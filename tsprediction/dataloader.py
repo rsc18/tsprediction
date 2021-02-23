@@ -153,6 +153,7 @@ def dataloader_from_pandas(
     train_size_percentage: float = 0.7,
     train: bool = True,
     sequence_length: int = 64,
+    custom=False
 ):
     """
     Loads the data from a csv file and returns normalized train or test data
@@ -177,7 +178,12 @@ def dataloader_from_pandas(
 
     """
     # loading the dataset from a csv file
-    dataset = df
+    if custom:
+        dataset=df
+    
+    else:
+        dataset = (df.iloc[:, 4].values).reshape(-1, 1)  ## why 4. close, check for seq length datalenght should be equal or greater than seq length
+    
     # normalizing the data
     
     normalized_data=norm_data(dataset)
