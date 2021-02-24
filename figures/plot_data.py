@@ -3,6 +3,7 @@ plots data
 """
 import matplotlib.pyplot as plt
 import joblib
+import numpy as np
 
 category_dict = {'open' : '1. open',
                   'high' : '2. high',
@@ -35,6 +36,7 @@ def plot_utils(test_data,predicted_data,seq,dataset=None, category='close'):
     dataY_plot = dataY.data.numpy()
     data_predict = sc2.inverse_transform(predicted_data)
     dataY_plot = sc2.inverse_transform(dataY_plot)
+    data_predict = np.insert(data_predict, 0, testX[-1], axis=0)
     
     plt.grid(True)
     plt.autoscale(axis='x', tight=True)
@@ -42,7 +44,7 @@ def plot_utils(test_data,predicted_data,seq,dataset=None, category='close'):
     if len(dataset.columns)>2:
         dataset=dataset[category_dict[category]]
 
-    x = list(dataset.index)[-seq:]
+    x = list(dataset.index)[-seq-1:]
     line_index=list(dataset.index)[-seq-1:][0]
     plt.plot(dataset, label='real data',color='navy')
     plt.plot(list(dataset.index)[-2*seq:(-seq)],testX,color='forestgreen',label='input_sequence')
