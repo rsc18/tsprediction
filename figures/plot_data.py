@@ -4,8 +4,13 @@ plots data
 import matplotlib.pyplot as plt
 import joblib
 
+category_dict = {'open' : '1. open',
+                  'high' : '2. high',
+                  'low' : '3. low',
+                  'close' : '4. close',
+                  'volume' : '5. volume'}
       
-def plot_utils(test_data,predicted_data,seq,dataset=None):
+def plot_utils(test_data,predicted_data,seq,dataset=None, category='close'):
     '''
     
 
@@ -21,7 +26,7 @@ def plot_utils(test_data,predicted_data,seq,dataset=None):
     None.
 
     '''
-
+    category = category if category else 'close'
     sc2=joblib.load('models/test_norm.mod')
     data_predict = sc2.inverse_transform(predicted_data)    
     testX=sc2.inverse_transform(test_data[0].view(-1,1).data.numpy())
@@ -35,7 +40,7 @@ def plot_utils(test_data,predicted_data,seq,dataset=None):
     plt.autoscale(axis='x', tight=True)
     
     if len(dataset.columns)>2:
-        dataset=dataset['4. close']
+        dataset=dataset[category_dict[category]]
 
     x = list(dataset.index)[-seq:]
     line_index=list(dataset.index)[-seq-1:][0]
@@ -47,8 +52,8 @@ def plot_utils(test_data,predicted_data,seq,dataset=None):
     
     # plt.plot(dataY_plot,label='real data')
     # plt.plot(data_predict, label='predict data')
-    plt.xlabel('Time')
-    plt.ylabel('Close Value')
+    plt.xlabel('time')
+    plt.ylabel(category)
     plt.title('Time-Series Prediction')
     plt.legend()
     plt.show()
