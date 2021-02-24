@@ -40,6 +40,8 @@ class LSTM(nn.Module):
                             num_layers=num_layers, batch_first=True)
         
         self.fc = nn.Linear(hidden_size, num_classes)
+        
+        self.relu = nn.ReLU()
 
     def forward(self, x):
         '''
@@ -68,5 +70,6 @@ class LSTM(nn.Module):
         h_out = h_out.view(-1, self.hidden_size)
         
         out = self.fc(h_out)
+        out = self.relu(out)
         
         return out
