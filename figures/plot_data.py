@@ -28,7 +28,7 @@ def plot_utils(test_data,predicted_data,seq,dataset=None, category='close'):
 
     '''
     category = category if category else 'close'
-    sc2=joblib.load('models/test_norm.mod')
+    sc2=joblib.load('models/train_norm.mod')
     data_predict = sc2.inverse_transform(predicted_data)    
     testX=sc2.inverse_transform(test_data[0].view(-1,1).data.numpy())
     testY=test_data[1]

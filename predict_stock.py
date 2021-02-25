@@ -24,6 +24,7 @@ from tsprediction.predict_model import predict_model
 from figures.plot_data import plot_utils
 
 if __name__ == "__main__":
+    print('\n')
     print('==============================================================')
     print('Welcome to Seq2Seq Stock Data Prediction')
     print('==============================================================')
@@ -55,7 +56,7 @@ if __name__ == "__main__":
         
         
         dataset=dataset.sort_index()
-        dataset_train = dataset[: -2 * sequence_length]
+        dataset_train = dataset[: -sequence_length]
         dataset_test = dataset[-2 * sequence_length :]
 
         train_test_data_tuple = dataloader_from_pandas(
@@ -81,13 +82,19 @@ if __name__ == "__main__":
 
         print('\nStarting prediction...\n')
         # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
+        # print(dataset_test)
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
             sequence_length=sequence_length,
             train_size_percentage=0,
             category = category
         )
+        
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
+        
+        
+       
+    
         predicted_data = predict_model(model, test_data_tuple[0])
         
         print('\nPrediction done!\n')
@@ -104,7 +111,7 @@ if __name__ == "__main__":
         plot_flag = arguments["--plot"]
         save_model = arguments["--saveModel"]
         dataset = pd.read_csv(csvloc)
-        dataset_train = dataset[: -2 * sequence_length]
+        dataset_train = dataset[: -sequence_length]
         dataset_test = dataset[-2 * sequence_length :]
                
         train_test_data_tuple = dataloader_from_pandas(
@@ -122,7 +129,7 @@ if __name__ == "__main__":
 
 
         print(f"loss of trained model = {loss}")
-
+        # print(dataset_test)
         # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
@@ -131,5 +138,11 @@ if __name__ == "__main__":
             custom=True,
         )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
+        
+        # import joblib
+        # sc2=joblib.load('models/train_norm.mod')
+        # print( sc2.inverse_transform(test_data_tuple[0])  )  
+        
+        
         predicted_data = predict_model(model, test_data_tuple[0])
         plot_utils(test_data_tuple, predicted_data,sequence_length,dataset)
