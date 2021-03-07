@@ -5,3 +5,4 @@ figures/__pycache__/
 *.mod
 *.ini
 *.bak
+.DS_Store
