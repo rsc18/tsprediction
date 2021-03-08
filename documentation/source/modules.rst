@@ -8,8 +8,7 @@ datasets
 
 misc
 ====
-.. automodule:: misc.chashi_exercises.fib
-    :members:
+
 tests
 =====
 

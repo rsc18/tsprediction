@@ -1,0 +1,9 @@
+*.cpp
+figures/__pycache__/
+*.log
+*.pyc
+*.mod
+*.ini
+*.bak
+.DS_Store
+models/
