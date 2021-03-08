@@ -41,7 +41,8 @@ class LSTM(nn.Module):
         
         self.fc = nn.Linear(hidden_size, num_classes)
         
-        self.relu = nn.ReLU()
+        # self.relu = nn.ReLU()
+        self.leaky_relu=nn.LeakyReLU(0.01)
 
     def forward(self, x):
         '''
@@ -70,5 +71,6 @@ class LSTM(nn.Module):
         
         out = self.fc(h_out)
         # out = self.relu(out)
+        out=self.leaky_relu(out)
         
         return out

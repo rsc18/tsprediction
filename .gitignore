@@ -7,3 +7,4 @@ figures/__pycache__/
 *.bak
 .DS_Store
 models/
+plots/
