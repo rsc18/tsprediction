@@ -30,8 +30,8 @@ def train_model(train_dataset_tuple,sequence_length,save_model=None, epochs=1000
     learning_rate = 0.01
     
     input_size = 1
-    hidden_size = 16
-    num_layers = 1
+    hidden_size = sequence_length
+    num_layers = 2
     
     num_classes = sequence_length
     
@@ -45,6 +45,7 @@ def train_model(train_dataset_tuple,sequence_length,save_model=None, epochs=1000
         outputs = lstm(trainX)
         optimizer.zero_grad()
         # obtain the loss function
+        # print(outputs.shape)
         loss = criterion(outputs, trainY.view(trainY.shape[0], -1))
         
         loss.backward()
