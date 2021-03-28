@@ -51,7 +51,7 @@ if __name__ == "__main__":
         
         print('\nRetrieving stock data from Alpha Vantage for ' + companySymbol + ' ...\n')
         
-        dataset = get_intraday_dataset(companySymbol)
+        dataset = get_intraday_dataset(companySymbol,interval="1min")
         
         
         
