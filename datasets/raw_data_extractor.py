@@ -12,7 +12,6 @@ import requests
 def get_intraday_dataset(symbol, interval="30min", key="2JVYQIAGV1ABJD0O"):
     """
     Gets intraday stock values for a given symbol
-
     Parameters
     ----------
     symbol : string
@@ -30,18 +29,13 @@ def get_intraday_dataset(symbol, interval="30min", key="2JVYQIAGV1ABJD0O"):
 
     """
     t_s = TimeSeries(key=key, output_format="pandas")
-    dataset = t_s.get_intraday(
-        symbol=symbol, interval=interval, outputsize="full"
-    )
+    dataset = t_s.get_intraday(symbol=symbol, interval=interval, outputsize="full")
     return dataset[0]
 
 
-
-
-def get_companies(keywords, function='SYMBOL_SEARCH', key='2JVYQIAGV1ABJD0O'):
-    '''
+def get_companies(keywords, function="SYMBOL_SEARCH", key="2JVYQIAGV1ABJD0O"):
+    """
     Gets the list of companies whose name matches with the keyword
-    
     Parameters
     ----------
     keywords : string
@@ -56,17 +50,17 @@ def get_companies(keywords, function='SYMBOL_SEARCH', key='2JVYQIAGV1ABJD0O'):
     Reurns: JSON
         JSON list of companies whose name has matched with the keyword
 
-    '''
-    #test: check bestmatch key in json
-    
-    API_URL = "https://www.alphavantage.co/query"
+    """
+    # test: check bestmatch key in json
+
+    api_url = "https://www.alphavantage.co/query"
 
     data = {
         "function": function,
         "keywords": keywords,
         "apikey": key,
-        }
+    }
 
-    response = requests.get(API_URL, params=data)
+    response = requests.get(api_url, params=data)
 
     return response.json()
