@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-extracting raw data
---------------------
-
 This module extracts data of company with interval 60 min default given company symbol.
 """
 from alpha_vantage.timeseries import TimeSeries

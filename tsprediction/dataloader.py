@@ -1,6 +1,4 @@
 """
-DATALOADER
-----------
 Currently loads data from a csv file and provide a dataloader with given batch
 size
 """
