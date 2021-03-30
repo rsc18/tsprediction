@@ -3,6 +3,7 @@ predict model
 used for predicting and testing model
 """
 
+
 def predict_model(model, test_data):
     """
 

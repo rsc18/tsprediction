@@ -13,11 +13,8 @@ from sklearn.preprocessing import MinMaxScaler
 from torch.autograd import Variable
 from tsprediction.normalize_data import norm_data
 
-category_dict = {'open' : 0,
-                  'high' : 1,
-                  'low' : 2,
-                  'close' : 3,
-                  'volume' : 4}
+category_dict = {"open": 0, "high": 1, "low": 2, "close": 3, "volume": 4}
+
 
 def get_input_and_target(dataset, sequence_length):
     """
@@ -155,13 +152,12 @@ def dataloader_from_csv(
     return test_x, test_y
 
 
-
 def dataloader_from_pandas(
     dataframe: pd.core.frame.DataFrame,
     train_size_percentage: float = 0.7,
     sequence_length: int = 64,
     custom=False,
-    category='close'
+    category="close",
 ):
     """
     Loads the data from a csv file and returns normalized train or test data
@@ -185,19 +181,19 @@ def dataloader_from_pandas(
         target seuquence.
 
     """
-    category = category if category else 'close'
+    category = category if category else "close"
     # loading the dataset from a csv file
     if custom:
-        dataset=dataframe
+        dataset = dataframe
     else:
         dataset = (dataframe.iloc[:, category_dict[category]].values).reshape(-1, 1)
     # why 4. close, check for seq length datalenght should be equal or greater
     # than seq length
     # normalizing the data
-    if train_size_percentage==1:
-        normalized_data=norm_data(dataset,'train_norm')
+    if train_size_percentage == 1:
+        normalized_data = norm_data(dataset, "train_norm")
     else:
-        normalized_data=norm_data(dataset,'test_norm')
+        normalized_data = norm_data(dataset, "test_norm")
     # min_max_scalar = MinMaxScaler()
     # normalized_data = min_max_scalar.fit_transform(dataset)
 
