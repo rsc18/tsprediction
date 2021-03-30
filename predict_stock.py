@@ -1,4 +1,7 @@
-"""Predict Stock CLI
+"""
+Seq2seq Stock Data Prediction
+-----------------------------
+Predict Stock CLI
 
 Usage:
     predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
