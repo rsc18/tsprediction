@@ -1,5 +1,13 @@
 """
-Train model here
+train_model module trains a LSTM model and saves the model in models folder.
+
+ train_test_data_tuple = dataloader_from_pandas(
+            dataset_train,
+            sequence_length=sequence_length,
+            train_size_percentage=1,
+            custom=True,
+        )
+        train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])
 """
 import torch
 from tsprediction.lstm_class import LSTM
@@ -7,38 +15,40 @@ from tsprediction.lstm_class import LSTM
 
 def train_model(train_dataset_tuple, sequence_length, save_model=None, epochs=1000):
     """
-
-
     Parameters
     ----------
-    train_dataset_tuple : train data tuple
-        DESCRIPTION.
-    sequence_length : TYPE
-        DESCRIPTION.
-    save_model : TYPE
-        DESCRIPTION.
+    train_dataset_tuple : tuple
+        train_dataset_tuple[0]: input sequence : a tensor array
+        train_dataset_tuple[1]: output sequence also we call it label sometimes : a tensor array
+    sequence_length : int
+        sequence length for input and output sequence
+    save_model : boolean, optional
+        DESCRIPTION. The default is None. If true, saves model in models folder
+    epochs : int, optional
+        DESCRIPTION. The default is 1000. Number of epochs we want to train the model
 
     Returns
     -------
-    lstm : TYPE
-        DESCRIPTION.
+    LSTM model and the loss
 
     """
-    params={}
-    params['learning_rate']=0.01
-    params['input_size']=1
-    params['num_layers']=2
-    params['hidden_size']=sequence_length
-    params['num_classes']=sequence_length
+    params = {}
+    params["learning_rate"] = 0.01
+    params["input_size"] = 1
+    params["num_layers"] = 2
+    params["hidden_size"] = sequence_length
+    params["num_classes"] = sequence_length
     train_x, train_y = train_dataset_tuple
 
-    lstm = LSTM(params['num_classes'],
-                params['input_size'],
-                params['hidden_size'],
-                params['num_layers'])
+    lstm = LSTM(
+        params["num_classes"],
+        params["input_size"],
+        params["hidden_size"],
+        params["num_layers"],
+    )
 
     criterion = torch.nn.MSELoss()  # mean-squared error for regression
-    optimizer = torch.optim.Adam(lstm.parameters(), lr=params['learning_rate'])
+    optimizer = torch.optim.Adam(lstm.parameters(), lr=params["learning_rate"])
 
     for epoch in range(epochs):
 
