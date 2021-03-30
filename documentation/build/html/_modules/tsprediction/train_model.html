@@ -159,14 +159,6 @@
   <h1>Source code for tsprediction.train_model</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">train_model module trains a LSTM model and saves the model in models folder.</span>
-
-<span class="sd"> train_test_data_tuple = dataloader_from_pandas(</span>
-<span class="sd">            dataset_train,</span>
-<span class="sd">            sequence_length=sequence_length,</span>
-<span class="sd">            train_size_percentage=1,</span>
-<span class="sd">            custom=True,</span>
-<span class="sd">        )</span>
-<span class="sd">        train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">tsprediction.lstm_class</span> <span class="kn">import</span> <span class="n">LSTM</span>

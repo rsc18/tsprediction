@@ -315,19 +315,6 @@ dataset : numpy array</p>
 <div class="section" id="module-tsprediction.train_model">
 <span id="train"></span><h1>Train<a class="headerlink" href="#module-tsprediction.train_model" title="Permalink to this headline">¶</a></h1>
 <p>train_model module trains a LSTM model and saves the model in models folder.</p>
-<blockquote>
-<div><dl>
-<dt>train_test_data_tuple = dataloader_from_pandas(</dt><dd><blockquote>
-<div><p>dataset_train,
-sequence_length=sequence_length,
-train_size_percentage=1,
-custom=True,</p>
-</div></blockquote>
-<p>)
-train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])</p>
-</dd>
-</dl>
-</div></blockquote>
 <dl class="py function">
 <dt id="tsprediction.train_model.train_model">
 <code class="sig-prename descclassname"><span class="pre">tsprediction.train_model.</span></code><code class="sig-name descname"><span class="pre">train_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset_tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/train_model.html#train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.train_model.train_model" title="Permalink to this definition">¶</a></dt>

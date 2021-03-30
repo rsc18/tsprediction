@@ -1,13 +1,5 @@
 """
 train_model module trains a LSTM model and saves the model in models folder.
-
- train_test_data_tuple = dataloader_from_pandas(
-            dataset_train,
-            sequence_length=sequence_length,
-            train_size_percentage=1,
-            custom=True,
-        )
-        train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])
 """
 import torch
 from tsprediction.lstm_class import LSTM
