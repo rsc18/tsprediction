@@ -32,7 +32,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -85,11 +84,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">tsprediction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html#module-datasets.raw_data_extractor">datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html#misc">misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html#tests">tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html#figures">figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#module-tsprediction.lstm_class">LSTM Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#module-tsprediction.normalize_data">Normalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#module-tsprediction.train_model">Train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#module-tsprediction.predict_model">Predictor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#module-datasets.raw_data_extractor">AlphaVantage Data Extractor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#test-modules">Test Modules</a></li>
 </ul>
 
             
@@ -160,12 +161,24 @@
 
 <div class="genindex-jumpbox">
  <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  
 </div>
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.dataloader.dataloader_from_csv">dataloader_from_csv() (in module tsprediction.dataloader)</a>
+</li>
+      <li><a href="modules.html#tsprediction.dataloader.dataloader_from_pandas">dataloader_from_pandas() (in module tsprediction.dataloader)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     datasets.raw_data_extractor
@@ -177,6 +190,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.lstm_class.LSTM.forward">forward() (tsprediction.lstm_class.LSTM method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -184,7 +205,17 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.dataloader.get_input_and_target">get_input_and_target() (in module tsprediction.dataloader)</a>
+</li>
       <li><a href="modules.html#datasets.raw_data_extractor.get_intraday_dataset">get_intraday_dataset() (in module datasets.raw_data_extractor)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.lstm_class.LSTM">LSTM (class in tsprediction.lstm_class)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -197,6 +228,100 @@
 
       <ul>
         <li><a href="modules.html#module-datasets.raw_data_extractor">datasets.raw_data_extractor</a>
+</li>
+        <li><a href="modules.html#module-tests.test_raw_data_extractor_pytest">tests.test_raw_data_extractor_pytest</a>
+</li>
+        <li><a href="modules.html#module-tsprediction.dataloader">tsprediction.dataloader</a>
+</li>
+        <li><a href="modules.html#module-tsprediction.lstm_class">tsprediction.lstm_class</a>
+</li>
+        <li><a href="modules.html#module-tsprediction.normalize_data">tsprediction.normalize_data</a>
+</li>
+        <li><a href="modules.html#module-tsprediction.predict_model">tsprediction.predict_model</a>
+</li>
+        <li><a href="modules.html#module-tsprediction.train_model">tsprediction.train_model</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.normalize_data.norm_data">norm_data() (in module tsprediction.normalize_data)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.dataloader.plot_from_csv">plot_from_csv() (in module tsprediction.dataloader)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.predict_model.predict_model">predict_model() (in module tsprediction.predict_model)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tsprediction.dataloader.shuffled_input_target">shuffled_input_target() (in module tsprediction.dataloader)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#tests.test_raw_data_extractor_pytest.test_get_intraday_dataset">test_get_intraday_dataset() (in module tests.test_raw_data_extractor_pytest)</a>
+</li>
+      <li>
+    tests.test_raw_data_extractor_pytest
+
+      <ul>
+        <li><a href="modules.html#module-tests.test_raw_data_extractor_pytest">module</a>
+</li>
+      </ul></li>
+      <li><a href="modules.html#tsprediction.train_model.train_model">train_model() (in module tsprediction.train_model)</a>
+</li>
+      <li>
+    tsprediction.dataloader
+
+      <ul>
+        <li><a href="modules.html#module-tsprediction.dataloader">module</a>
+</li>
+      </ul></li>
+      <li>
+    tsprediction.lstm_class
+
+      <ul>
+        <li><a href="modules.html#module-tsprediction.lstm_class">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    tsprediction.normalize_data
+
+      <ul>
+        <li><a href="modules.html#module-tsprediction.normalize_data">module</a>
+</li>
+      </ul></li>
+      <li>
+    tsprediction.predict_model
+
+      <ul>
+        <li><a href="modules.html#module-tsprediction.predict_model">module</a>
+</li>
+      </ul></li>
+      <li>
+    tsprediction.train_model
+
+      <ul>
+        <li><a href="modules.html#module-tsprediction.train_model">module</a>
 </li>
       </ul></li>
   </ul></td>

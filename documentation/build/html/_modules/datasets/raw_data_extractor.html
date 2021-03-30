@@ -32,7 +32,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -85,11 +84,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tsprediction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-datasets.raw_data_extractor">datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html#misc">misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html#tests">tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html#figures">figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.lstm_class">LSTM Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.normalize_data">Normalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.train_model">Train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.predict_model">Predictor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-datasets.raw_data_extractor">AlphaVantage Data Extractor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#test-modules">Test Modules</a></li>
 </ul>
 
             
@@ -158,26 +159,22 @@
   <h1>Source code for datasets.raw_data_extractor</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">extracting raw data</span>
-<span class="sd">--------------------</span>
-
 <span class="sd">This module extracts data of company with interval 60 min default given company symbol.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">alpha_vantage.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 
-<div class="viewcode-block" id="get_intraday_dataset"><a class="viewcode-back" href="../../modules.html#datasets.raw_data_extractor.get_intraday_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_intraday_dataset</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;60min&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;2JVYQIAGV1ABJD0O&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_intraday_dataset"><a class="viewcode-back" href="../../modules.html#datasets.raw_data_extractor.get_intraday_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_intraday_dataset</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30min&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;2JVYQIAGV1ABJD0O&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets intraday stock values for a given symbol</span>
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    symbol : string</span>
 <span class="sd">        The company keyword for which we want the stock data.</span>
 <span class="sd">    interval : string, optional</span>
 <span class="sd">        1min, 5min, 15min, 30min, 60min</span>
-<span class="sd">                    (the interval between the data points). The default is &quot;60min&quot;.</span>
+<span class="sd">                    (the interval between the data points). The default is &quot;30min&quot;.</span>
 <span class="sd">    key : string, optional</span>
 <span class="sd">        API key from the user. The default is &quot;2JVYQIAGV1ABJD0O&quot;.</span>
 
@@ -188,18 +185,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">t_s</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">t_s</span><span class="o">.</span><span class="n">get_intraday</span><span class="p">(</span>
-        <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">interval</span><span class="p">,</span> <span class="n">outputsize</span><span class="o">=</span><span class="s2">&quot;full&quot;</span>
-    <span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">t_s</span><span class="o">.</span><span class="n">get_intraday</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">interval</span><span class="p">,</span> <span class="n">outputsize</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-
-
-<div class="viewcode-block" id="get_companies"><a class="viewcode-back" href="../../modules.html#datasets.raw_data_extractor.get_companies">[docs]</a><span class="k">def</span> <span class="nf">get_companies</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s1">&#39;SYMBOL_SEARCH&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;2JVYQIAGV1ABJD0O&#39;</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="get_companies"><a class="viewcode-back" href="../../modules.html#datasets.raw_data_extractor.get_companies">[docs]</a><span class="k">def</span> <span class="nf">get_companies</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s2">&quot;SYMBOL_SEARCH&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;2JVYQIAGV1ABJD0O&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets the list of companies whose name matches with the keyword</span>
-<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    keywords : string</span>
@@ -214,18 +206,18 @@
 <span class="sd">    Reurns: JSON</span>
 <span class="sd">        JSON list of companies whose name has matched with the keyword</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1">#test: check bestmatch key in json</span>
-    
-    <span class="n">API_URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.alphavantage.co/query&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># test: check bestmatch key in json</span>
+
+    <span class="n">api_url</span> <span class="o">=</span> <span class="s2">&quot;https://www.alphavantage.co/query&quot;</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="n">function</span><span class="p">,</span>
         <span class="s2">&quot;keywords&quot;</span><span class="p">:</span> <span class="n">keywords</span><span class="p">,</span>
         <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
-        <span class="p">}</span>
+    <span class="p">}</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">API_URL</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 </pre></div>

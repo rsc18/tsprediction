@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tsprediction &mdash; tspredictor</title>
+  <title>DataLoader &mdash; tspredictor</title>
   
 
   
@@ -32,7 +32,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -86,14 +85,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">tsprediction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#module-datasets.raw_data_extractor">datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#extracting-raw-data">extracting raw data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#misc">misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tests">tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#figures">figures</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-tsprediction.lstm_class">LSTM Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-tsprediction.normalize_data">Normalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-tsprediction.train_model">Train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-tsprediction.predict_model">Predictor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-datasets.raw_data_extractor">AlphaVantage Data Extractor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#test-modules">Test Modules</a></li>
 </ul>
 
             
@@ -142,7 +140,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>tsprediction</li>
+      <li>DataLoader</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -161,21 +159,222 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tsprediction">
-<h1>tsprediction<a class="headerlink" href="#tsprediction" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-tsprediction.dataloader">
+<span id="dataloader"></span><h1>DataLoader<a class="headerlink" href="#module-tsprediction.dataloader" title="Permalink to this headline">¶</a></h1>
+<p>Currently loads data from a csv file and provide a dataloader with given batch
+size</p>
+<dl class="py function">
+<dt id="tsprediction.dataloader.dataloader_from_csv">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.dataloader.</span></code><code class="sig-name descname"><span class="pre">dataloader_from_csv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size_percentage</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/dataloader.html#dataloader_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.dataloader.dataloader_from_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the data from a csv file and returns normalized train or test data
+according to the splitting percentage.
+Parameters
+———-
+filename : str</p>
+<blockquote>
+<div><p>The csv filename.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>train_size_percentage<span class="classifier">float, optional</span></dt><dd><p>train-test split. The default is 0.7.</p>
+</dd>
+<dt>train<span class="classifier">bool, optional</span></dt><dd><p>train data or test data as returning tuple. The default is True.</p>
+</dd>
+<dt>sequence_length<span class="classifier">int, optional</span></dt><dd><p>length of every sequence. The default is 64.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>2D Tensor</dt><dd><p>input sequence.</p>
+</dd>
+<dt>2D Tensor</dt><dd><p>target seuquence.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tsprediction.dataloader.dataloader_from_pandas">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.dataloader.</span></code><code class="sig-name descname"><span class="pre">dataloader_from_pandas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size_percentage</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'close'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/dataloader.html#dataloader_from_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.dataloader.dataloader_from_pandas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the data from a csv file and returns normalized train or test data
+according to the splitting percentage.
+Parameters
+———-
+dataframe : pandas.core.frame.DataFrame,</p>
+<blockquote>
+<div><p>pandas dataFrame with time series data. We only extract the 5th column for now.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>train_size_percentage<span class="classifier">float, optional</span></dt><dd><p>train-test split. The default is 0.7.</p>
+</dd>
+<dt>train<span class="classifier">bool, optional</span></dt><dd><p>train data or test data as returning tuple. The default is True.</p>
+</dd>
+<dt>sequence_length<span class="classifier">int, optional</span></dt><dd><p>length of every sequence. The default is 64.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>2D Tensor</dt><dd><p>input sequence.</p>
+</dd>
+<dt>2D Tensor</dt><dd><p>target seuquence.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tsprediction.dataloader.get_input_and_target">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.dataloader.</span></code><code class="sig-name descname"><span class="pre">get_input_and_target</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/dataloader.html#get_input_and_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.dataloader.get_input_and_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes timeseries data and sequence length as input and generates input
+sequence and output sequence
+Parameters
+———-
+dataset : numpy array</p>
+<blockquote>
+<div><p>time series data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>sequence_length<span class="classifier">int</span></dt><dd><p>sequence length length for input and output sequence.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>tuple list</dt><dd><p>A tuple of input samples and target samples</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tsprediction.dataloader.plot_from_csv">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.dataloader.</span></code><code class="sig-name descname"><span class="pre">plot_from_csv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_title</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/dataloader.html#plot_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.dataloader.plot_from_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the close values of stock data from a csv file
+Parameters
+———-
+filename : str</p>
+<blockquote>
+<div><p>The csv file name where the data is saved.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>plot_title<span class="classifier">str</span></dt><dd><p>The plot title.</p>
+</dd>
+</dl>
+<p>None.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tsprediction.dataloader.shuffled_input_target">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.dataloader.</span></code><code class="sig-name descname"><span class="pre">shuffled_input_target</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/dataloader.html#shuffled_input_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.dataloader.shuffled_input_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns shuffled input and target sequences
+Parameters
+———-
+dataset : numpy array</p>
+<blockquote>
+<div><p>contains tuples of input and target samples</p>
+</div></blockquote>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple of input samples and target samples</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tsprediction.lstm_class">
+<span id="lstm-class"></span><h1>LSTM Class<a class="headerlink" href="#module-tsprediction.lstm_class" title="Permalink to this headline">¶</a></h1>
+<p>Build LSTM model</p>
+<dl class="py class">
+<dt id="tsprediction.lstm_class.LSTM">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tsprediction.lstm_class.</span></code><code class="sig-name descname"><span class="pre">LSTM</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/lstm_class.html#LSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.lstm_class.LSTM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a LSTM class</p>
+<dl class="py method">
+<dt id="tsprediction.lstm_class.LSTM.forward">
+<code class="sig-name descname"><span class="pre">forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/lstm_class.html#LSTM.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.lstm_class.LSTM.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>x<span class="classifier">TYPE</span></dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>out<span class="classifier">TYPE</span></dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tsprediction.normalize_data">
+<span id="normalizer"></span><h1>Normalizer<a class="headerlink" href="#module-tsprediction.normalize_data" title="Permalink to this headline">¶</a></h1>
+<p>Normalize time series data</p>
+<dl class="py function">
+<dt id="tsprediction.normalize_data.norm_data">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.normalize_data.</span></code><code class="sig-name descname"><span class="pre">norm_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/normalize_data.html#norm_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.normalize_data.norm_data" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>dataset<span class="classifier">pandas series</span></dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>normalized_data<span class="classifier">TYPE</span></dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tsprediction.train_model">
+<span id="train"></span><h1>Train<a class="headerlink" href="#module-tsprediction.train_model" title="Permalink to this headline">¶</a></h1>
+<p>train_model module trains a LSTM model and saves the model in models folder.</p>
+<blockquote>
+<div><dl>
+<dt>train_test_data_tuple = dataloader_from_pandas(</dt><dd><blockquote>
+<div><p>dataset_train,
+sequence_length=sequence_length,
+train_size_percentage=1,
+custom=True,</p>
+</div></blockquote>
+<p>)
+train_data_tuple = (train_test_data_tuple[0], train_test_data_tuple[1])</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py function">
+<dt id="tsprediction.train_model.train_model">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.train_model.</span></code><code class="sig-name descname"><span class="pre">train_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset_tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/train_model.html#train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.train_model.train_model" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>train_dataset_tuple<span class="classifier">tuple</span></dt><dd><p>train_dataset_tuple[0]: input sequence : a tensor array
+train_dataset_tuple[1]: output sequence also we call it label sometimes : a tensor array</p>
+</dd>
+<dt>sequence_length<span class="classifier">int</span></dt><dd><p>sequence length for input and output sequence</p>
+</dd>
+<dt>save_model<span class="classifier">boolean, optional</span></dt><dd><p>DESCRIPTION. The default is None. If true, saves model in models folder</p>
+</dd>
+<dt>epochs<span class="classifier">int, optional</span></dt><dd><p>DESCRIPTION. The default is 1000. Number of epochs we want to train the model</p>
+</dd>
+</dl>
+<p>LSTM model and the loss</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tsprediction.predict_model">
+<span id="predictor"></span><h1>Predictor<a class="headerlink" href="#module-tsprediction.predict_model" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to predict the sequence given a model and input sequence</p>
+<dl class="py function">
+<dt id="tsprediction.predict_model.predict_model">
+<code class="sig-prename descclassname"><span class="pre">tsprediction.predict_model.</span></code><code class="sig-name descname"><span class="pre">predict_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsprediction/predict_model.html#predict_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tsprediction.predict_model.predict_model" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>model<span class="classifier">torch state_dict</span></dt><dd><p>saved torch model from train_model.</p>
+</dd>
+</dl>
+<p>test_data: test data x sequence</p>
+<p>data_predict in normalized form</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-datasets.raw_data_extractor">
-<span id="datasets"></span><h1>datasets<a class="headerlink" href="#module-datasets.raw_data_extractor" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="extracting-raw-data">
-<h2>extracting raw data<a class="headerlink" href="#extracting-raw-data" title="Permalink to this headline">¶</a></h2>
+<span id="alphavantage-data-extractor"></span><h1>AlphaVantage Data Extractor<a class="headerlink" href="#module-datasets.raw_data_extractor" title="Permalink to this headline">¶</a></h1>
 <p>This module extracts data of company with interval 60 min default given company symbol.</p>
 <dl class="py function">
 <dt id="datasets.raw_data_extractor.get_companies">
-<code class="sig-prename descclassname">datasets.raw_data_extractor.</code><code class="sig-name descname">get_companies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keywords</span></em>, <em class="sig-param"><span class="n">function</span><span class="o">=</span><span class="default_value">'SYMBOL_SEARCH'</span></em>, <em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">'2JVYQIAGV1ABJD0O'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasets/raw_data_extractor.html#get_companies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datasets.raw_data_extractor.get_companies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the list of companies whose name matches with the keyword</p>
+<code class="sig-prename descclassname"><span class="pre">datasets.raw_data_extractor.</span></code><code class="sig-name descname"><span class="pre">get_companies</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keywords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SYMBOL_SEARCH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2JVYQIAGV1ABJD0O'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasets/raw_data_extractor.html#get_companies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasets.raw_data_extractor.get_companies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of companies whose name matches with the keyword
+Parameters
+———-
+keywords : string</p>
+<blockquote>
+<div><p>A keyword for company search</p>
+</div></blockquote>
 <dl class="simple">
-<dt>keywords<span class="classifier">string</span></dt><dd><p>A keyword for company search</p>
-</dd>
 <dt>function<span class="classifier">string, optional</span></dt><dd><p>The function of the API The default is ‘SYMBOL_SEARCH’.</p>
 </dd>
 <dt>key<span class="classifier">string, optional</span></dt><dd><p>User key for accessing the alpha vantage API. The default is ‘2JVYQIAGV1ABJD0O’.</p>
@@ -189,13 +388,17 @@
 
 <dl class="py function">
 <dt id="datasets.raw_data_extractor.get_intraday_dataset">
-<code class="sig-prename descclassname">datasets.raw_data_extractor.</code><code class="sig-name descname">get_intraday_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'60min'</span></em>, <em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">'2JVYQIAGV1ABJD0O'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasets/raw_data_extractor.html#get_intraday_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datasets.raw_data_extractor.get_intraday_dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets intraday stock values for a given symbol</p>
+<code class="sig-prename descclassname"><span class="pre">datasets.raw_data_extractor.</span></code><code class="sig-name descname"><span class="pre">get_intraday_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'30min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2JVYQIAGV1ABJD0O'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasets/raw_data_extractor.html#get_intraday_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasets.raw_data_extractor.get_intraday_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets intraday stock values for a given symbol
+Parameters
+———-
+symbol : string</p>
+<blockquote>
+<div><p>The company keyword for which we want the stock data.</p>
+</div></blockquote>
 <dl class="simple">
-<dt>symbol<span class="classifier">string</span></dt><dd><p>The company keyword for which we want the stock data.</p>
-</dd>
 <dt>interval<span class="classifier">string, optional</span></dt><dd><dl class="simple">
-<dt>1min, 5min, 15min, 30min, 60min</dt><dd><p>(the interval between the data points). The default is “60min”.</p>
+<dt>1min, 5min, 15min, 30min, 60min</dt><dd><p>(the interval between the data points). The default is “30min”.</p>
 </dd>
 </dl>
 </dd>
@@ -209,15 +412,26 @@
 </dd></dl>
 
 </div>
-</div>
-<div class="section" id="misc">
-<h1>misc<a class="headerlink" href="#misc" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="tests">
-<h1>tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="figures">
-<h1>figures<a class="headerlink" href="#figures" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="test-modules">
+<h1>Test Modules<a class="headerlink" href="#test-modules" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-tests.test_raw_data_extractor_pytest"></span><dl class="simple">
+<dt>Test module for raw_data_extractor</dt><dd><ol class="arabic simple">
+<li><p>Testing dataset is empty or not</p></li>
+<li><p>Dataset imported from alphavantage have column name 4. close in 3rd index</p></li>
+<li><p>Dataset is a timeseries</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="py function">
+<dt id="tests.test_raw_data_extractor_pytest.test_get_intraday_dataset">
+<code class="sig-prename descclassname"><span class="pre">tests.test_raw_data_extractor_pytest.</span></code><code class="sig-name descname"><span class="pre">test_get_intraday_dataset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_raw_data_extractor_pytest.html#test_get_intraday_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_raw_data_extractor_pytest.test_get_intraday_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test:
+1. Testing dataset is empty or not
+2. Dataset imported from alphavantage have column name 4. close in 3rd index
+3. Dataset is a timeseries</p>
+<p>None.</p>
+</dd></dl>
+
 </div>
 
 

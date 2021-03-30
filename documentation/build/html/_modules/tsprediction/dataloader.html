@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tsprediction.dataloader &mdash; tspredictor</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tspredictor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">DataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.lstm_class">LSTM Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.normalize_data">Normalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.train_model">Train</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-tsprediction.predict_model">Predictor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#module-datasets.raw_data_extractor">AlphaVantage Data Extractor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html#test-modules">Test Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tspredictor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tsprediction.dataloader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tsprediction.dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Currently loads data from a csv file and provide a dataloader with given batch</span>
+<span class="sd">size</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">tsprediction.normalize_data</span> <span class="kn">import</span> <span class="n">norm_data</span>
+
+<span class="n">category_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;open&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;close&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;volume&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_input_and_target"><a class="viewcode-back" href="../../modules.html#tsprediction.dataloader.get_input_and_target">[docs]</a><span class="k">def</span> <span class="nf">get_input_and_target</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes timeseries data and sequence length as input and generates input</span>
+<span class="sd">    sequence and output sequence</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset : numpy array</span>
+<span class="sd">        time series data.</span>
+<span class="sd">    sequence_length : int</span>
+<span class="sd">        sequence length length for input and output sequence.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple list</span>
+<span class="sd">        A tuple of input samples and target samples</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_seq</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">target_seq</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">_x</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">sequence_length</span><span class="p">)]</span>
+        <span class="n">_y</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">sequence_length</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sequence_length</span><span class="p">]</span>
+        <span class="n">input_seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_x</span><span class="p">)</span>
+        <span class="n">target_seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_y</span><span class="p">)</span>
+    <span class="n">data_all</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_seq</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_seq</span><span class="p">)):</span>
+        <span class="n">data_all</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">data_all</span></div>
+
+
+<div class="viewcode-block" id="plot_from_csv"><a class="viewcode-back" href="../../modules.html#tsprediction.dataloader.plot_from_csv">[docs]</a><span class="k">def</span> <span class="nf">plot_from_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plot_title</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the close values of stock data from a csv file</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The csv file name where the data is saved.</span>
+<span class="sd">    plot_title : str</span>
+<span class="sd">        The plot title.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># loading the dataset from a csv file</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># plotting the dataset</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">plot_title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="shuffled_input_target"><a class="viewcode-back" href="../../modules.html#tsprediction.dataloader.shuffled_input_target">[docs]</a><span class="k">def</span> <span class="nf">shuffled_input_target</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns shuffled input and target sequences</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset : numpy array</span>
+<span class="sd">        contains tuples of input and target samples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple of input samples and target samples</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">input_sequence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">target_sequence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+        <span class="n">input_sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span>
+        <span class="n">target_sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">input_sequence</span><span class="p">,</span> <span class="n">target_sequence</span></div>
+
+
+<div class="viewcode-block" id="dataloader_from_csv"><a class="viewcode-back" href="../../modules.html#tsprediction.dataloader.dataloader_from_csv">[docs]</a><span class="k">def</span> <span class="nf">dataloader_from_csv</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">train_size_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads the data from a csv file and returns normalized train or test data</span>
+<span class="sd">    according to the splitting percentage.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The csv filename.</span>
+<span class="sd">    train_size_percentage : float, optional</span>
+<span class="sd">        train-test split. The default is 0.7.</span>
+<span class="sd">    train : bool, optional</span>
+<span class="sd">        train data or test data as returning tuple. The default is True.</span>
+<span class="sd">    sequence_length : int, optional</span>
+<span class="sd">        length of every sequence. The default is 64.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    2D Tensor</span>
+<span class="sd">        input sequence.</span>
+<span class="sd">    2D Tensor</span>
+<span class="sd">        target seuquence.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># loading the dataset from a csv file</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># why 4. close, check for seq length datalenght should be equal or greater</span>
+    <span class="c1"># than seq length</span>
+    <span class="c1"># normalizing the data</span>
+    <span class="n">min_max_scalar</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="n">normalized_data</span> <span class="o">=</span> <span class="n">min_max_scalar</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="c1"># getting input and target sequence</span>
+    <span class="n">data_all</span> <span class="o">=</span> <span class="n">get_input_and_target</span><span class="p">(</span><span class="n">normalized_data</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">)</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">data_all</span><span class="p">)</span>
+    <span class="n">input_sequence</span><span class="p">,</span> <span class="n">target_sequence</span> <span class="o">=</span> <span class="n">shuffled_input_target</span><span class="p">(</span><span class="n">data_all</span><span class="p">)</span>
+
+    <span class="c1"># train and test data size</span>
+    <span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">)</span> <span class="o">*</span> <span class="n">train_size_percentage</span><span class="p">)</span>
+
+    <span class="n">train_x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">train_size</span><span class="p">])))</span>
+    <span class="n">train_y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">train_size</span><span class="p">])))</span>
+
+    <span class="n">test_x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">[</span><span class="n">train_size</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">)]))</span>
+    <span class="p">)</span>
+    <span class="n">test_y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">[</span><span class="n">train_size</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">)]))</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span>
+    <span class="k">return</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">test_y</span></div>
+
+
+<div class="viewcode-block" id="dataloader_from_pandas"><a class="viewcode-back" href="../../modules.html#tsprediction.dataloader.dataloader_from_pandas">[docs]</a><span class="k">def</span> <span class="nf">dataloader_from_pandas</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">train_size_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">custom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;close&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads the data from a csv file and returns normalized train or test data</span>
+<span class="sd">    according to the splitting percentage.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataframe : pandas.core.frame.DataFrame,</span>
+<span class="sd">         pandas dataFrame with time series data. We only extract the 5th column for now.</span>
+<span class="sd">    train_size_percentage : float, optional</span>
+<span class="sd">        train-test split. The default is 0.7.</span>
+<span class="sd">    train : bool, optional</span>
+<span class="sd">        train data or test data as returning tuple. The default is True.</span>
+<span class="sd">    sequence_length : int, optional</span>
+<span class="sd">        length of every sequence. The default is 64.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    2D Tensor</span>
+<span class="sd">        input sequence.</span>
+<span class="sd">    2D Tensor</span>
+<span class="sd">        target seuquence.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">category</span> <span class="k">if</span> <span class="n">category</span> <span class="k">else</span> <span class="s2">&quot;close&quot;</span>
+    <span class="c1"># loading the dataset from a csv file</span>
+    <span class="k">if</span> <span class="n">custom</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataframe</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataframe</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># why 4. close, check for seq length datalenght should be equal or greater</span>
+    <span class="c1"># than seq length</span>
+    <span class="c1"># normalizing the data</span>
+    <span class="k">if</span> <span class="n">train_size_percentage</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">normalized_data</span> <span class="o">=</span> <span class="n">norm_data</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">&quot;train_norm&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">normalized_data</span> <span class="o">=</span> <span class="n">norm_data</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">&quot;test_norm&quot;</span><span class="p">)</span>
+    <span class="c1"># min_max_scalar = MinMaxScaler()</span>
+    <span class="c1"># normalized_data = min_max_scalar.fit_transform(dataset)</span>
+
+    <span class="c1"># getting input and target sequence</span>
+    <span class="n">data_all</span> <span class="o">=</span> <span class="n">get_input_and_target</span><span class="p">(</span><span class="n">normalized_data</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">)</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">data_all</span><span class="p">)</span>
+    <span class="n">input_sequence</span><span class="p">,</span> <span class="n">target_sequence</span> <span class="o">=</span> <span class="n">shuffled_input_target</span><span class="p">(</span><span class="n">data_all</span><span class="p">)</span>
+
+    <span class="c1"># train and test data size</span>
+    <span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">)</span> <span class="o">*</span> <span class="n">train_size_percentage</span><span class="p">)</span>
+
+    <span class="n">train_x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">train_size</span><span class="p">])))</span>
+    <span class="n">train_y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">train_size</span><span class="p">])))</span>
+
+    <span class="n">test_x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">[</span><span class="n">train_size</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">)]))</span>
+    <span class="p">)</span>
+    <span class="n">test_y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">[</span><span class="n">train_size</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_sequence</span><span class="p">)]))</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_x</span><span class="p">,</span> <span class="n">test_y</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, rsc18 and ci20l.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
