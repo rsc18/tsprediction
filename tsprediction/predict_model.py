@@ -2,6 +2,7 @@
 This module is used to predict the sequence given a model and input sequence
 """
 
+
 def predict_model(model, test_data):
     """
 
