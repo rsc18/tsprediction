@@ -63,9 +63,14 @@ class LSTM(nn.Module):
             DESCRIPTION.
 
         """
-        h_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size))
+        dev=torch.device("cpu")
+        if torch.cuda.is_available():  
+          dev = torch.device("cuda")
 
-        c_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size))
+      
+        h_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(dev)
+
+        c_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(dev)
         # Propagate input through LSTM
         _, (h_out, _) = self.lstm(data, (h_0, c_0))
 
