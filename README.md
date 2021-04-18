@@ -60,6 +60,9 @@ To train a model with custom datasets.
 - Deep learning library PyTorch with gpu support
 - writeup/reporting
 
+## Installaibility    
+ * git clone https://github.com/rsc18/tsprediction.git
+ * Run poetry install from root directory
 
 =======
 ### Partner
