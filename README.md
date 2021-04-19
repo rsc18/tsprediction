@@ -11,6 +11,11 @@ This repo contains the code base for predicting time series stock data. We will 
 * PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
 * LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
 * Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
+
+## Installability    
+ * git clone https://github.com/rsc18/tsprediction.git
+ * Run poetry install from root directory
+ 
 ## Usage
 
 ```
@@ -60,9 +65,7 @@ To train a model with custom datasets.
 - Deep learning library PyTorch with gpu support
 - writeup/reporting
 
-## Installaibility    
- * git clone https://github.com/rsc18/tsprediction.git
- * Run poetry install from root directory
+
 
 =======
 ### Partner
