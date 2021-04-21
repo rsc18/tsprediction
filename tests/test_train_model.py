@@ -1,9 +1,11 @@
 import sys
 import os
 import pandas as pd
-CURRENT_DIR = os.getcwd()
-PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
-sys.path.append(PARENT_DIR)
+# =============================================================================
+# CURRENT_DIR = os.getcwd()
+# PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
+# sys.path.append(PARENT_DIR)
+# =============================================================================
 import tsprediction.train_model as tm
 import tsprediction.dataloader as dl
 
@@ -20,6 +22,6 @@ def test_train_model():
     model, loss = tm.train_model(
                 train_data_tuple, 2, epochs=2
             )
-    assert len(loss) == len(train_data_tuple[0])
-    assert type(model) == 'tsprediction.lstm_class.LSTM'
+    assert loss > 0
+    assert type(loss) == float
 

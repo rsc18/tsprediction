@@ -42,7 +42,6 @@ if __name__ == "__main__":
         print("Symbol\t\tName")
         for companies in companies_list:
             print(f"{companies['1. symbol']}\t\t{companies['2. name']}")
-        # test: check bestmatch key in json
 
     elif arguments["alphavantage"]:
         category = arguments["--category"] if arguments["--category"] else None
@@ -87,8 +86,6 @@ if __name__ == "__main__":
         print(f"\nloss of trained model = {loss}\n")
 
         print("\nStarting prediction...\n")
-        # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
-        # print(dataset_test)
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
             sequence_length=sequence_length,
@@ -135,8 +132,6 @@ if __name__ == "__main__":
             )
 
         print(f"loss of trained model = {loss}")
-        # print(dataset_test)
-        # test_data_tuple=(train_test_data_tuple[2],train_test_data_tuple[3])
         train_test_data_tuple = dataloader_from_pandas(
             dataset_test,
             sequence_length=sequence_length,
@@ -144,10 +139,5 @@ if __name__ == "__main__":
             custom=True,
         )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
-
-        # import joblib
-        # sc2=joblib.load('models/train_norm.mod')
-        # print( sc2.inverse_transform(test_data_tuple[0])  )
-
         predicted_data = predict_model(model, test_data_tuple[0])
         plot_utils(test_data_tuple, predicted_data, sequence_length, dataset)

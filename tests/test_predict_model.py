@@ -29,8 +29,8 @@ def test_train_model():
             train_size_percentage=0,
             custom=True,
         )
-    test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
-    predicted_data = pm.predict_model(model, test_data_tuple)
-    assert len(predicted_data) == 2
+    test_data = train_test_data_tuple[2]
+    predicted_data = pm.predict_model(model, test_data)
+    assert len(predicted_data) == 14
 
 

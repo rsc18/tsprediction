@@ -6,9 +6,9 @@ Test module for raw_data_extractor
 """
 import sys
 import os
-CURRENT_DIR = os.getcwd()
-PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
-sys.path.append(PARENT_DIR)
+#CURRENT_DIR = os.getcwd()
+#PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
+#sys.path.append(PARENT_DIR)
 import datasets.raw_data_extractor as rde
 import pandas as pd
 

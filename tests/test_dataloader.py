@@ -2,10 +2,12 @@
 import sys
 import os
 import pandas as pd
-CURRENT_DIR = os.getcwd()
-PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
-print(PARENT_DIR)
-sys.path.append(PARENT_DIR)
+# =============================================================================
+# CURRENT_DIR = os.getcwd()
+# PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
+# print(PARENT_DIR)
+# sys.path.append(PARENT_DIR)
+# =============================================================================
 import tsprediction.dataloader as dl
 
 
@@ -53,6 +55,7 @@ def test_dataloader_from_pandas():
 
     """
     tr_df = pd.DataFrame([1,2,3,4,5,6,7,8,9,10])
-    #train_test_data_tuple = dl.dataloader_from_pandas(tr_df, 1, 2, custom=True)
+    train_test_data_tuple = dl.dataloader_from_pandas(tr_df, 1, 2, custom=True)
     assert tr_df.size == 10
+    assert len(train_test_data_tuple[0]) == 7
     
