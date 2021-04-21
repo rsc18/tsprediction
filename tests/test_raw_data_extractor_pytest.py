@@ -4,14 +4,9 @@ Test module for raw_data_extractor
     2. Dataset imported from alphavantage have column name 4. close in 3rd index
     3. Dataset is a timeseries
 """
-# import sys
-# import os
-import datasets.raw_data_extractor as rde
 import pandas as pd
+import datasets.raw_data_extractor as rde
 
-# CURRENT_DIR = os.getcwd()
-# PARENT_DIR = "/".join(CURRENT_DIR.split("/")[:-1])
-# sys.path.append(PARENT_DIR)
 
 
 def test_get_intraday_dataset():
@@ -33,3 +28,16 @@ def test_get_intraday_dataset():
     assert len(dataset) > 0
     assert dataset.columns[3] == "4. close"
     assert pd.core.dtypes.common.is_datetime_or_timedelta_dtype(dataset.index)
+
+
+def test_companies():
+    """
+    Test:
+    1. Check for a valid keyword if the returned list is empty or not
+    Returns
+    -------
+    None.
+
+    """
+    company_list = rde.get_companies("micro")["bestMatches"]
+    assert len(company_list) > 0
