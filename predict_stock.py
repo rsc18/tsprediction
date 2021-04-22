@@ -17,6 +17,7 @@ Options:
     -k <keywords>               search companies names using keyword
     --epochs = no-of-epochs     no of epochs
     --category = stock category open, high, low, close, volume
+    --saveCSV = True/False      save the predicted data in CSV file
 
 """
 import pandas as pd
@@ -33,6 +34,12 @@ if __name__ == "__main__":
     print("Welcome to Seq2Seq Stock Data Prediction")
     print("==============================================================")
     arguments = docopt(__doc__, version="0.0.rc1")
+    save_plot = False
+    save_csv = False
+    if arguments["--plot"]=='True':
+        save_plot = True
+    if arguments["--saveCSV"]=='True':
+        save_csv = True
     if arguments["<predictSequenceLength>"]:
         sequence_length = int(arguments["<predictSequenceLength>"])
 
@@ -101,7 +108,8 @@ if __name__ == "__main__":
 
         print("\nPlotting data...\n")
         plot_utils(
-            test_data_tuple, predicted_data, sequence_length, dataset, category=category
+            test_data_tuple, predicted_data, sequence_length, dataset, category=category,
+            comapny_symbol=companySymbol, save_plot=save_plot, save_csv=save_csv
         )
 
     elif arguments["custom"]:
@@ -140,4 +148,5 @@ if __name__ == "__main__":
         )
         test_data_tuple = (train_test_data_tuple[2], train_test_data_tuple[3])
         predicted_data = predict_model(model, test_data_tuple[0])
-        plot_utils(test_data_tuple, predicted_data, sequence_length, dataset)
+        plot_utils(test_data_tuple, predicted_data, sequence_length, dataset,
+                   comapny_symbol="custom", save_plot=save_plot, save_csv=save_csv)

@@ -2,8 +2,10 @@
 plots data
 """
 import matplotlib.pyplot as plt
+import pandas as pd
 import joblib
 import numpy as np
+import time
 
 category_dict = {
     "open": "1. open",
@@ -14,7 +16,7 @@ category_dict = {
 }
 
 
-def plot_utils(test_data, predicted_data, seq, dataset=None, category="close"):
+def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", comapny_symbol = "", save_plot=None, save_csv=None):
     """
 
 
@@ -30,6 +32,7 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close"):
     None.
 
     """
+    filename = comapny_symbol + ' - ' + str(time.ctime())
     category = category if category else "close"
     sc2 = joblib.load("models/train_norm.mod")
     data_predict = sc2.inverse_transform(predicted_data)
@@ -40,7 +43,15 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close"):
     data_predict = sc2.inverse_transform(predicted_data)
     data_yplot = sc2.inverse_transform(data_yplot)
     data_predict = np.insert(data_predict, 0, test_x[-1], axis=0)
-
+    
+# =============================================================================
+#     if (save_csv):
+#         save_data = pd.DataFrame()
+#         save_data['Input:'] = test_x
+#         save_data['Output:'] = data_predict.flatten()
+#         save_data.to_csv ("figures/{}.png".format(filename), index = False, header=True)
+# =============================================================================
+        
     plt.grid(True)
     plt.autoscale(axis="x", tight=True)
 
@@ -66,4 +77,6 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close"):
     plt.ylabel(category)
     plt.title("Time-Series Prediction")
     plt.legend()
+    if (save_plot):
+        plt.savefig("figures/{}.png".format(filename))
     plt.show()
