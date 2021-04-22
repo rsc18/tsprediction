@@ -43,6 +43,7 @@ To train a stock model with TSLA(Tesla) data.
 ``` python predict_stock.py alphavantage TSLA 64 --saveModel=teslaModel --epochs=2000   ```      
 To train a model with custom datasets.  
 ``` python predict_stock.py custom file.csv 9   ```       
+![alt text](https://github.com/rsc18/tsprediction/figures/main/MSFT-64-e300.png?raw=true)
 
 
 ### Technologies
