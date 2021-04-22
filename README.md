@@ -40,15 +40,16 @@ This repo contains the code base for predicting time series stock data. We will 
 To list companies symbol that match keyword "micro" :
 ``` python predict_stock.py --listcompanies -k micro  ```       
 To train a stock model with TSLA(Tesla) data.     
-``` python predict_stock.py alphavantage MSFT 64 --saveModel=teslaModel --epochs=2000   ```      
+``` python predict_stock.py alphavantage MSFT 64 --saveModel=teslaModel   ```      
 ![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/MSFT-64-e300.png)
 
 To train a model with custom datasets.  We have a sawtooth data in custom.csv.
-``` python predict_stock.py custom tsprediction/data/file.csv 9   ```       
-![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/sawtooth.png)
+``` python predict_stock.py custom tsprediction/data/num.csv 9   ```       
+![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/sawtooth.png)   
 
 Results from Suchita's Data:
 We used apple's data.
+``` python predict_stock.py custom tsprediction/data/aapl.csv 32   ```     
 ![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/S-AAPL-32-e300.png)
 
 
