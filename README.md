@@ -11,6 +11,12 @@ This repo contains the code base for predicting time series stock data. We will 
 * PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
 * LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
 * Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
+
+## Installation   
+ * git clone https://github.com/rsc18/tsprediction.git
+ * Run "poetry install" from root directory to install all required libraries
+ * To run the project follow the Usage
+ 
 ## Usage
 
 ```
@@ -34,9 +40,17 @@ This repo contains the code base for predicting time series stock data. We will 
 To list companies symbol that match keyword "micro" :
 ``` python predict_stock.py --listcompanies -k micro  ```       
 To train a stock model with TSLA(Tesla) data.     
-``` python predict_stock.py alphavantage TSLA 64 --saveModel=teslaModel --epochs=2000   ```      
-To train a model with custom datasets.  
-``` python predict_stock.py custom file.csv 9   ```       
+``` python predict_stock.py alphavantage MSFT 64 --saveModel=teslaModel   ```      
+![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/MSFT-64-e300.png)
+
+To train a model with custom datasets.  We have a sawtooth data in custom.csv.
+``` python predict_stock.py custom tsprediction/data/num.csv 9   ```       
+![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/sawtooth.png)   
+
+Results from Suchita's Data:
+We used apple's data.
+``` python predict_stock.py custom tsprediction/data/aapl.csv 32   ```     
+![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/S-AAPL-32-e300.png)
 
 
 ### Technologies
@@ -47,7 +61,7 @@ To train a model with custom datasets.
  
 
 ## Project Description
-* Alpha- vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
+* Alpha-Vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
 * PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
 * LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
 * Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
@@ -59,6 +73,7 @@ To train a model with custom datasets.
 - data processing/cleaning
 - Deep learning library PyTorch with gpu support
 - writeup/reporting
+
 
 
 =======
