@@ -4,10 +4,8 @@ size
 """
 import random
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import torch
-from sklearn.preprocessing import MinMaxScaler
 from torch.autograd import Variable
 from tsprediction.normalize_data import norm_data
 
@@ -43,6 +41,7 @@ def get_input_and_target(dataset, sequence_length):
         data_all.append((x_i, y_i))
     return data_all
 
+
 def shuffled_input_target(dataset):
     """
     Returns shuffled input and target sequences
@@ -64,6 +63,7 @@ def shuffled_input_target(dataset):
         input_sequence.append(x_i)
         target_sequence.append(y_i)
     return input_sequence, target_sequence
+
 
 def dataloader_from_pandas(
     dataframe: pd.core.frame.DataFrame,

@@ -1,5 +1,6 @@
 """
 Build LSTM model
+pylint bug: https://github.com/microsoft/vscode-python/issues/5635
 """
 
 import torch
@@ -63,14 +64,17 @@ class LSTM(nn.Module):
             DESCRIPTION.
 
         """
-        dev=torch.device("cpu")
-        if torch.cuda.is_available():  
-          dev = torch.device("cuda")
+        dev = torch.device("cpu")
+        if torch.cuda.is_available():
+            dev = torch.device("cuda")
 
-      
-        h_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(dev)
+        h_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(
+            dev
+        )
 
-        c_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(dev)
+        c_0 = Variable(torch.zeros(self.num_layers, data.size(0), self.hidden_size)).to(
+            dev
+        )
         # Propagate input through LSTM
         _, (h_out, _) = self.lstm(data, (h_0, c_0))
 

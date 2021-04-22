@@ -1,5 +1,6 @@
 """
 This module is used to predict the sequence given a model and input sequence
+pylint bug: https://github.com/pytorch/pytorch/issues/701
 """
 import torch
 
@@ -18,9 +19,8 @@ def predict_model(model, test_data):
 
     """
     dev=torch.device("cpu")
-    if torch.cuda.is_available():  
-      dev = torch.device("cuda")
-      
+    if torch.cuda.is_available():
+        dev = torch.device("cuda")
     model=model.to(dev)
     test_data=test_data.to(dev)
     model.eval()
