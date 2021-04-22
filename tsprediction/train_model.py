@@ -1,5 +1,6 @@
 """
 train_model module trains a LSTM model and saves the model in models folder.
+pylint bug: https://github.com/pytorch/pytorch/issues/701
 """
 import torch
 from tsprediction.lstm_class import LSTM
@@ -39,17 +40,17 @@ def train_model(train_dataset_tuple, sequence_length, save_model=None, epochs=10
         params["num_layers"],
     )
 
-    dev=torch.device("cpu")
-    if torch.cuda.is_available():  
-      dev = torch.device("cuda")
-      print('GPU mode on :)')
-     
-    lstm=lstm.to(dev)
+    dev = torch.device("cpu")
+    if torch.cuda.is_available():
+        dev = torch.device("cuda")
+        print("GPU mode on :)")
+
+    lstm = lstm.to(dev)
     criterion = torch.nn.MSELoss()  # mean-squared error for regression
-    optimizer = torch.optim.Adam(lstm.parameters(), lr=params["learning_rate"]) 
-      
+    optimizer = torch.optim.Adam(lstm.parameters(), lr=params["learning_rate"])
+
     for epoch in range(epochs):
-        train_x, train_y=train_x.to(dev), train_y.to(dev)
+        train_x, train_y = train_x.to(dev), train_y.to(dev)
         outputs = lstm(train_x)
         optimizer.zero_grad()
         # obtain the loss function
