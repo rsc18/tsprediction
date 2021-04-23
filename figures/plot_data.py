@@ -42,7 +42,8 @@ def plot_utils(
     None.
 
     """
-    filename = comapny_symbol + " - " + str(time.ctime())
+    date = "_".join(str(time.ctime()).split())
+    filename = comapny_symbol + "_" + str(time.ctime())
     category = category if category else "close"
     sc2 = joblib.load("models/train_norm.mod")
     data_predict = sc2.inverse_transform(predicted_data)
