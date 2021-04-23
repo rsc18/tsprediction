@@ -159,6 +159,7 @@
   <h1>Source code for tsprediction.train_model</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">train_model module trains a LSTM model and saves the model in models folder.</span>
+<span class="sd">pylint bug: https://github.com/pytorch/pytorch/issues/701</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">tsprediction.lstm_class</span> <span class="kn">import</span> <span class="n">LSTM</span>
@@ -174,9 +175,9 @@
 <span class="sd">    sequence_length : int</span>
 <span class="sd">        sequence length for input and output sequence</span>
 <span class="sd">    save_model : boolean, optional</span>
-<span class="sd">        DESCRIPTION. The default is None. If true, saves model in models folder</span>
+<span class="sd">        The default is None. If true, saves model in models folder</span>
 <span class="sd">    epochs : int, optional</span>
-<span class="sd">        DESCRIPTION. The default is 1000. Number of epochs we want to train the model</span>
+<span class="sd">        The default is 1000. Number of epochs we want to train the model</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -198,11 +199,17 @@
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;num_layers&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
+    <span class="n">dev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+        <span class="n">dev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU mode on :)&quot;</span><span class="p">)</span>
+
+    <span class="n">lstm</span> <span class="o">=</span> <span class="n">lstm</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
     <span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>  <span class="c1"># mean-squared error for regression</span>
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">lstm</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
-
+        <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">train_x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dev</span><span class="p">),</span> <span class="n">train_y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">lstm</span><span class="p">(</span><span class="n">train_x</span><span class="p">)</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="c1"># obtain the loss function</span>

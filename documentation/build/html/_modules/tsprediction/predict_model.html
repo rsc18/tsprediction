@@ -159,8 +159,9 @@
   <h1>Source code for tsprediction.predict_model</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module is used to predict the sequence given a model and input sequence</span>
+<span class="sd">pylint bug: https://github.com/pytorch/pytorch/issues/701</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">torch</span>
 
 <div class="viewcode-block" id="predict_model"><a class="viewcode-back" href="../../modules.html#tsprediction.predict_model.predict_model">[docs]</a><span class="k">def</span> <span class="nf">predict_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -176,9 +177,15 @@
 <span class="sd">    data_predict in normalized form</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dev</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+        <span class="n">dev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+    <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">test_predict</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">test_data</span><span class="p">[:</span><span class="mi">50</span><span class="p">])</span>
     <span class="n">t_p</span> <span class="o">=</span> <span class="n">test_predict</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">t_p</span><span class="o">=</span><span class="n">t_p</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
     <span class="n">data_predict</span> <span class="o">=</span> <span class="n">t_p</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">data_predict</span></div>
 </pre></div>
