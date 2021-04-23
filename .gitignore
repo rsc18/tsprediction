@@ -6,6 +6,5 @@ figures/__pycache__/
 *.ini
 *.bak
 .DS_Store
-models/
 plots/
 misc/
