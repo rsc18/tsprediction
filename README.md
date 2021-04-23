@@ -1,7 +1,7 @@
 # Sequence to Sequence Stock Time Series Data Prediction Model using PyTorch 
 
 #### -- Project Status: [Active, On-Hold, Completed]
-Active
+Completed
 
 ## Project Intro/Objective
 This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train ehich will predict future stock values of given equity. We will be using LSTM for training. 
@@ -23,17 +23,20 @@ This repo contains the code base for predicting time series stock data. We will 
     Predict Stock CLI
 
     Usage:
-        predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
-        predict_stock.py custom <csvFileLocation> <predictSequenceLength> [options]
-        predict_stock.py --help
-        predict_stock.py --listcompanies -k <keywords>
- 
+    predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
+    predict_stock.py custom <csvFileLocation> <predictSequenceLength> [options]
+    predict_stock.py --help
+    predict_stock.py --listcompanies -k <keywords>
+
     Options:
-        -h --help                   help with predict_stock useage
-        --plot= True/False          plot flag if true saves the plots in plot folder
-        --saveModel= model-name     save_model flag if given saves the trained model with given model-name for future use
-        -k <keywords>               search companies names using keyword
-        --epochs = no-of-epochs     no of epochs
+    -h --help                   help with predict_stock useage
+    --plot= True/False          plot flag if true saves the plots in plot folder
+    --saveModel= model-name     save_model flag if given saves the trained model with
+                                given model-name for future use
+    -k <keywords>               search companies names using keyword
+    --epochs = no-of-epochs     no of epochs
+    --category = stock category open, high, low, close, volume
+    --saveCSV = True/False      save the predicted data in CSV file
 
 ```
 ## Example
@@ -67,23 +70,6 @@ We used apple's data.
 * Spyder
 * PyTorch
  
-
-## Project Description
-* Alpha-Vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
-* PyTorch: We will be using PyTorch library for building the Neural Network model with LSTM cells.
-* LSTM: Long Short Term Memory (LSTM) is an artificial recurrent neural network architecture which is capable of learning order dependence in sequence prediction problem.
-* Sequnce to Sequence Model: We will be building a sequence to sequence model with the LSTM cells. Here the input sequence would be a sequence of stock data of a specified equity and the output will be prediction of a future sequence of the same equity or some other equity. 
-
-
-## Needs of this project
-
-- data collection from stock API
-- data processing/cleaning
-- Deep learning library PyTorch with gpu support
-- writeup/reporting
-
-
-
 =======
 ### Partner
 |Name     |  FSUID   |  FSU e-mail  |
