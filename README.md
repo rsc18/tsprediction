@@ -39,6 +39,7 @@ This repo contains the code base for predicting time series stock data. We will 
     --saveCSV = True/False      save the predicted data in CSV file
 
 ```
+
 ## Example
 To list companies symbol that match keyword "micro" :
 
@@ -63,6 +64,10 @@ We used apple's data.
     
 ![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/S-AAPL-32-e300.png)
 
+## Running Pylint and Coverage   
+Run following command from root folder    
+make pylint   
+make coverage   
 
 ### Technologies
 * Python
