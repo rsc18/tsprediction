@@ -43,6 +43,7 @@ def plot_utils(
 
     """
     date = "_".join(str(time.ctime()).split())
+    date = "_".join(date.split(':'))
     filename = comapny_symbol + "_" + date
     category = category if category else "close"
     sc2 = joblib.load("models/train_norm.mod")
