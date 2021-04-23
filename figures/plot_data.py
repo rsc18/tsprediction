@@ -44,13 +44,6 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", c
     data_yplot = sc2.inverse_transform(data_yplot)
     data_predict = np.insert(data_predict, 0, test_x[-1], axis=0)
     
-# =============================================================================
-#     if (save_csv):
-#         save_data = pd.DataFrame()
-#         save_data['Input:'] = test_x
-#         save_data['Output:'] = data_predict.flatten()
-#         save_data.to_csv ("figures/{}.png".format(filename), index = False, header=True)
-# =============================================================================
         
     plt.grid(True)
     plt.autoscale(axis="x", tight=True)
@@ -58,9 +51,15 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", c
     if len(dataset.columns) > 2:
         dataset = dataset[category_dict[category]]
 
+    if (save_csv):
+            save_data = pd.DataFrame()
+            save_data['Input:'] = test_x.flatten()
+            save_data['Real Output:'] = data_yplot.flatten()
+            save_data['Predicted Output:'] = data_predict[1:, :].flatten()
+            save_data.to_csv ("figures/prediction_{}.csv".format(filename), index = False, header=True)
     pp_x = list(dataset.index)[-seq - 1 :]
     line_index = list(dataset.index)[-seq - 1 :][0]
-    plt.plot(dataset, label="real data", color="navy")
+    plt.plot(dataset[-seq:], label="real data", color="navy")
     plt.plot(
         list(dataset.index)[-2 * seq : (-seq)],
         test_x,
