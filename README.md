@@ -69,11 +69,15 @@ Run following command from root folder
 make pylint   
 make coverage   
 
+## Generating docs
+Go to documentation folder and run : make html
+
 ### Technologies
 * Python
 * Pandas
 * Spyder
 * PyTorch
+ 
  
 =======
 ### Partner
