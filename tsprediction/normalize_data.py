@@ -13,12 +13,12 @@ def norm_data(dataset, norm_name):
     Parameters
     ----------
     dataset : pandas series
-        DESCRIPTION.
+        data to normalize
 
     Returns
     -------
     normalized_data : TYPE
-        DESCRIPTION.
+        normalized data
 
     """
     if norm_name == "test_norm":

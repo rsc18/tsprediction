@@ -16,9 +16,9 @@ def train_model(train_dataset_tuple, sequence_length, save_model=None, epochs=10
     sequence_length : int
         sequence length for input and output sequence
     save_model : boolean, optional
-        DESCRIPTION. The default is None. If true, saves model in models folder
+        The default is None. If true, saves model in models folder
     epochs : int, optional
-        DESCRIPTION. The default is 1000. Number of epochs we want to train the model
+        The default is 1000. Number of epochs we want to train the model
 
     Returns
     -------

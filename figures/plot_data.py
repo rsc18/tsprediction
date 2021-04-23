@@ -32,10 +32,10 @@ def plot_utils(
 
     Parameters
     ----------
-    test_data : TYPE
-        DESCRIPTION.
-    predicted_data : TYPE
-        DESCRIPTION.
+    test_data : array
+         test data for prediction and comparison
+    predicted_data : array
+        predicted sequence
 
     Returns
     -------

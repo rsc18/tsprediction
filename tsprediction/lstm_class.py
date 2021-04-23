@@ -17,14 +17,14 @@ class LSTM(nn.Module):
         """
         Parameters
         ----------
-        num_classes : TYPE
-            DESCRIPTION.
-        input_size : TYPE
-            DESCRIPTION.
-        hidden_size : TYPE
-            DESCRIPTION.
-        num_layers : TYPE
-            DESCRIPTION.
+        num_classes : integer
+            output size
+        input_size : integer
+            input sequence number
+        hidden_size : integer
+            numebr of hidden nodes
+        num_layers : integer
+            number of LSTM layers
 
         Returns
         -------
@@ -55,13 +55,13 @@ class LSTM(nn.Module):
         """
         Parameters
         ----------
-        x : TYPE
-            DESCRIPTION.
+        x : array
+            input sequence to train
 
         Returns
         -------
-        out : TYPE
-            DESCRIPTION.
+        out : array
+            predicted sequence
 
         """
         dev = torch.device("cpu")
