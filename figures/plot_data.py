@@ -1,11 +1,12 @@
 """
 plots data
 """
+import time
 import matplotlib.pyplot as plt
 import pandas as pd
 import joblib
 import numpy as np
-import time
+
 
 category_dict = {
     "open": "1. open",
@@ -16,7 +17,16 @@ category_dict = {
 }
 
 
-def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", comapny_symbol = "", save_plot=None, save_csv=None):
+def plot_utils(
+    test_data,
+    predicted_data,
+    seq,
+    dataset=None,
+    category="close",
+    comapny_symbol="",
+    save_plot=None,
+    save_csv=None,
+):
     """
 
 
@@ -32,7 +42,7 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", c
     None.
 
     """
-    filename = comapny_symbol + ' - ' + str(time.ctime())
+    filename = comapny_symbol + " - " + str(time.ctime())
     category = category if category else "close"
     sc2 = joblib.load("models/train_norm.mod")
     data_predict = sc2.inverse_transform(predicted_data)
@@ -43,20 +53,21 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", c
     data_predict = sc2.inverse_transform(predicted_data)
     data_yplot = sc2.inverse_transform(data_yplot)
     data_predict = np.insert(data_predict, 0, test_x[-1], axis=0)
-    
-        
+
     plt.grid(True)
     plt.autoscale(axis="x", tight=True)
 
     if len(dataset.columns) > 2:
         dataset = dataset[category_dict[category]]
 
-    if (save_csv):
-            save_data = pd.DataFrame()
-            save_data['Input:'] = test_x.flatten()
-            save_data['Real Output:'] = data_yplot.flatten()
-            save_data['Predicted Output:'] = data_predict[1:, :].flatten()
-            save_data.to_csv ("figures/prediction_{}.csv".format(filename), index = False, header=True)
+    if save_csv:
+        save_data = pd.DataFrame()
+        save_data["Input:"] = test_x.flatten()
+        save_data["Real Output:"] = data_yplot.flatten()
+        save_data["Predicted Output:"] = data_predict[1:, :].flatten()
+        save_data.to_csv(
+            "figures/prediction_{}.csv".format(filename), index=False, header=True
+        )
     pp_x = list(dataset.index)[-seq - 1 :]
     line_index = list(dataset.index)[-seq - 1 :][0]
     plt.plot(dataset[-seq:], label="real data", color="navy")
@@ -76,6 +87,6 @@ def plot_utils(test_data, predicted_data, seq, dataset=None, category="close", c
     plt.ylabel(category)
     plt.title("Time-Series Prediction")
     plt.legend()
-    if (save_plot):
+    if save_plot:
         plt.savefig("figures/{}.png".format(filename))
     plt.show()
