@@ -1,6 +1,6 @@
 # Sequence to Sequence Stock Time Series Data Prediction Model using PyTorch 
 
-#### -- Project Status: [Active, On-Hold, Completed]
+#### Project Status: [Active, On-Hold, Completed]
 Completed
 
 ## Project Intro/Objective
