@@ -64,7 +64,7 @@ if __name__ == "__main__":
             "\nRetrieving stock data from Alpha Vantage for " + companySymbol + " ...\n"
         )
 
-        dataset = pd.DataFrame(get_intraday_dataset(companySymbol, interval="1min", key))
+        dataset = pd.DataFrame(get_intraday_dataset(companySymbol, interval="1min", key = key))
 
         dataset = dataset.sort_index()
         dataset_train = dataset[:-sequence_length]
