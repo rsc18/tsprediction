@@ -6,7 +6,7 @@ from alpha_vantage.timeseries import TimeSeries
 import requests
 
 
-def get_intraday_dataset(symbol, interval="30min", key="2JVYQIAGV1ABJD0O"):
+def get_intraday_dataset(symbol, interval="30min", key=key):
     """
     Gets intraday stock values for a given symbol
     Parameters
