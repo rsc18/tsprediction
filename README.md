@@ -19,12 +19,14 @@ This repo contains the code base for predicting time series stock data. We will 
  * To run the project follow the Usage
  
 ## Usage
+ * Create Alphavantage key from https://www.alphavantage.co/support/#api-key
+ * Save that key for later use
 
 ```
     Predict Stock CLI
 
     Usage:
-    predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
+    predict_stock.py alphavantage <alphavantage_key> <companySymbol> <predictSequenceLength> [options]
     predict_stock.py custom <csvFileLocation> <predictSequenceLength> [options]
     predict_stock.py --help
     predict_stock.py --listcompanies -k <keywords>
@@ -46,9 +48,9 @@ To list companies symbol that match keyword "micro" :
 
 ``` python predict_stock.py --listcompanies -k micro  ``` 
      
-To train a stock model with MSFT(Microsoft) data.
+To train a stock model with MSFT(Microsoft) data. (Note the alphavantage key might not work for you create your own from https://www.alphavantage.co/support/#api-key)
     
-``` python predict_stock.py alphavantage MSFT 64```     
+``` python predict_stock.py alphavantage B4CVMOCB6M2W7B5O MSFT 64```     
  
 ![alt text](https://github.com/rsc18/tsprediction/blob/main/figures/MSFT-64-e300.png)
 
