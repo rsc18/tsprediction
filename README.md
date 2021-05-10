@@ -14,7 +14,8 @@ This repo contains the code base for predicting time series stock data. We will 
 
 ## Installation   
  * git clone https://github.com/rsc18/tsprediction.git
- * Run "poetry install" from root directory to install all required libraries
+ * Run "poetry install" from root directory to install all required libraries/home/ram/.cache/pypoetry/virtualenvs/tsprediction-Yr_4QMnV-py3.8
+ * Run "poetry shell" to activate the virtual env
  * To run the project follow the Usage
  
 ## Usage
