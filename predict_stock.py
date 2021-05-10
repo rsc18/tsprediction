@@ -4,7 +4,7 @@ Seq2seq Stock Data Prediction
 Predict Stock CLI
 
 Usage:
-    predict_stock.py alphavantage <companySymbol> <predictSequenceLength> [options]
+    predict_stock.py alphavantage <alphavantage_key> <companySymbol> <predictSequenceLength> [options]
     predict_stock.py custom <csvFileLocation> <predictSequenceLength> [options]
     predict_stock.py --help
     predict_stock.py --listcompanies -k <keywords>
@@ -51,6 +51,7 @@ if __name__ == "__main__":
             print(f"{companies['1. symbol']}\t\t{companies['2. name']}")
 
     elif arguments["alphavantage"]:
+        key = arguments["<alphavantage_key>"]
         category = arguments["--category"] if arguments["--category"] else None
         if arguments["--epochs"]:
             epochs = int(arguments["--epochs"])
@@ -63,7 +64,7 @@ if __name__ == "__main__":
             "\nRetrieving stock data from Alpha Vantage for " + companySymbol + " ...\n"
         )
 
-        dataset = pd.DataFrame(get_intraday_dataset(companySymbol, interval="1min"))
+        dataset = pd.DataFrame(get_intraday_dataset(companySymbol, interval="1min", key))
 
         dataset = dataset.sort_index()
         dataset_train = dataset[:-sequence_length]
