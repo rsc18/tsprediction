@@ -4,7 +4,7 @@
 Completed
 
 ## Project Intro/Objective
-This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train ehich will predict future stock values of given equity. We will be using LSTM for training. 
+This repo contains the code base for predicting time series stock data. We will be using live stock data and feed them to the NN to train which will predict future stock values of given equity. We will be using LSTM for training. 
 
 ## Project Description
 * Alpha- vantage: We will collect stock time series data using Alpha-vantage Time Series Stock API. 
