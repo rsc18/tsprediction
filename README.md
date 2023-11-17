@@ -83,16 +83,8 @@ Go to documentation folder and run : make html
  
  
 =======
-### Partner
-|Name     |  FSUID   |  FSU e-mail  |
-|---------|-----------------|-------|
-| Ram Sharan Chaulagain | RSC18 | rsc18@my.fsu.edu |
-| Chashi Mahiul Islam | CI20L | ci20l@my.fsu.edu |
-
-#### Project Supervisor:
-
-|Name     |  github id   | 
-|---------|-----------------|
-|Piyush Kumar | pkfl |
-
-
+### From
+|Name     | e-mail  |
+|---------|-------|
+| Ram Sharan Chaulagain |  rsc18@my.fsu.edu |
+| Chashi Mahiul Islam | ci20l@my.fsu.edu |
